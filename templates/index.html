@@ -1,0 +1,54 @@
+<!--home html-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <title>Life expectancy calculator</title>
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="../static/script.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>The life expectancy project</h1>
+            <nav>
+                <ul>
+                    <li><a href={{ url_for('home') }}><b>Home</b></a></li>
+                    <li><a href={{ url_for('aboutus') }}>About</a></li>
+                    <li><a href={{ url_for('theProject') }}>The Project</a></li>
+                    <li><a href={{ url_for('filesUsed') }}>Files</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="homeSection">
+            <section class="inputHeaders">
+                <h2>¡Calcula tu esperanza de vida!</h2>
+                <p><b>Bienvenido a nuestra WEB. Introduce unos pocos datos y en menos de un minuto averigua tu esperanza de vida!</b></p>
+                <p><b>Esta calculadora es realista, si no quieres saber la edad con la que probablemente mueras, no introduzcas tus datos.</b></p>
+                <a href={{ url_for('explain') }} class="button">Más información</a>
+            </section>
+        
+            <section class="inputLabels">
+                <h2>Rellena los campos y descubre tu esperanza de vida gratis!</h2>
+
+                <form action="/execute-script" method="post">
+                    <label for "valor">País de residencia:</label>
+                    <input type="text" name="pais" id="pais"><br>
+                    <label for "valor">Fumas habitualmente?:</label>
+                    <input type="text" name="fuma" id="fuma"><br>
+                    <button class="button" type="button" id="executeButton">Enviar datos a la calculadora</button>
+                </form>
+
+                
+
+                <div id="resultDiv" class="resultDiv"></div>
+            </section>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Grupo Verde. Todos los derechos reservados.</p>
+        </footer>
+    </body>
+</html>

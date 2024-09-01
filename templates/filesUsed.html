@@ -1,0 +1,40 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Files</title>
+        <link rel="stylesheet" href="../static/style.css">
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    </head>
+
+    <body id="download_page_body">
+        <header>
+            <h1>The life expectancy project</h1>
+            <nav>
+                <ul>
+                    <li><a href={{ url_for('home') }}>Home</a></li>
+                    <li><a href={{ url_for('aboutus') }}>About</a></li>
+                    <li><a href={{ url_for('theProject') }}>The Project</a></li>
+                    <li><a href={{ url_for('filesUsed') }}><b>Files</b></a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="filesUsedSection">
+                <div class="image-container">
+                
+                    <a href="/static/csvs/Life Expectancy Data Europe Recodificado.csv" target="_blank"><span>CSV dataset</span></a>
+                    <a href="/static/ipynbs/ipynb.zip" target="_blank"><span>ZIP con ipynb</span></a>
+                    <a href="/static/pdfs/memoria.pdf" target="_blank"><span>PDF Memoria</span></a>
+                    <a href="/static/video/video.zip" target="_blank"><span>Vídeo</span></a>
+                    <a href="/static/py/py.zip" target="_blank"><span>ZIP con py</span></a>
+
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>&copy; 2024 Grupo Verde. Todos los derechos reservados.</p>
+        </footer>
+    </body>
+</html>

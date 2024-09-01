@@ -1,0 +1,160 @@
+<!--About us html-->
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/style.css">
+        <title>About us developers</title>
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+        <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script>
+    </head>
+    
+    <body>
+        <header>
+            <h1>The life expectancy project</h1>
+            <nav>
+                <ul>
+                    <li><a href={{ url_for('home') }}>Home</a></li>
+                    <li><a href={{ url_for('aboutus') }}><b>About</b></a></li>
+                    <li><a href={{ url_for('theProject') }}>The Project</a></li>
+                    <li><a href={{ url_for('filesUsed') }}>Files</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="aboutusSection">
+            <div class="scrollable-wrapper">
+                <div class="container">
+                    <div class="card">
+                        <div class="card__top">
+                            <img src="/static/images/fondobiblio.jpg" alt="Sky"></img>
+                            <!--"../images/fondobiblio.jpg"-->
+                            <div class="profile__photo">
+                                <img src="/static/images/isabelleimage.jpg" alt="Profile Photo">
+                            </div>
+                        </div>
+                   
+                        <div class="card__content">
+                            <div class="names">
+                                <h2>Isabelle Archer</h2>
+                                <h3>Backend Developer and Coordinator</h3>
+                            </div>
+                            <div class="about">
+                                <p><span><i class="fas fa-map-marker-alt"></i></span>  Spain</p>
+                                <p><span><i class="far fa-building"></i></span>  Grupo Verde</p>
+                                <p><span><i class="far fa-envelope"></i></span><a href="mailto:iarcher@upv.edu.es"> iarcher@upv.edu.es</a></p>
+                                <a href={{ url_for('isabelle') }} class="button">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="container">
+                    <div class="card">
+                        <div class="card__top">
+                            <img src="/static/images/fondoagora.jpg" alt="Sky">
+                            <div class="profile__photo">
+                                <img src="/static/images/nadalimage.jpg" alt="Profile Photo">
+                            </div>
+                        </div>
+                   
+                        <div class="card__content">
+                            <div class="names">
+                                <h2>Nadal Bardisa Quintero</h2>
+                                <h3>Backend Developer and Web Designer</h3>
+                            </div>
+                            <div class="about">
+                                <p><span><i class="fas fa-map-marker-alt"></i></span>  Spain</p>
+                                <p><span><i class="far fa-building"></i></span>  Grupo Verde</p>
+                                <p><span><i class="far fa-envelope"></i></span><a href="mailto:nbarqui@upv.edu.es"> nbarqui@upv.edu.es</a></p>
+                                <a href={{ url_for('nadal') }} class="button">Read More</a>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>
+                
+
+
+                <div class="container">
+                    <div class="card">
+                        <div class="card__top">
+                            <img src="/static/images/fondocamino.jpg" alt="Sky">
+                            <div class="profile__photo">
+                                <img src="/static/images/fernandaimage.jpg" alt="Profile Photo">
+                            </div>
+                        </div>
+                   
+                        <div class="card__content">
+                            <div class="names">
+                                <h2>Fernanda Mara de Paula Goncalves</h2>
+                                <h3>Report Editor and Presentation Maker</h3>
+                            </div>
+                            <div class="about">
+                                <p><span><i class="fas fa-map-marker-alt"></i></span>  Spain</p>
+                                <p><span><i class="far fa-building"></i></span>  Grupo Verde</p>
+                                <p><span><i class="far fa-envelope"></i></span><a href="mailto:fmdepau@upv.edu.es"> fmdepau@upv.edu.es</a></p>
+                                <a href={{ url_for('fernanda') }} class="button">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="container">
+                    <div class="card">
+                        <div class="card__top">
+                            <img src="/static/images/fondocamino2.jpg" alt="Sky">
+                            <div class="profile__photo">
+                                <img src="/static/images/carlaimage.jpg" alt="Profile Photo">
+                            </div>
+                        </div>
+                   
+                        <div class="card__content">
+                            <div class="names">
+                                <h2>Carla Jimenez Argudo</h2>
+                                <h3>Report Editor and Data Analyst</h3>
+                            </div>
+                            <div class="about">
+                                <p><span><i class="fas fa-map-marker-alt"></i></span>  Spain</p>
+                                <p><span><i class="far fa-building"></i></span>  Grupo Verde</p>
+                                <p><span><i class="far fa-envelope"></i></span><a href="mailto:cjimarg@upv.edu.es"> cjimarg@upv.edu.es</a></p>
+                                <a href={{ url_for('carla') }} class="button">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="container">
+                    <div class="card">
+                        <div class="card__top">
+                            <img src="/static/images/fondocesped.jpg" alt="Sky">
+                            <div class="profile__photo">
+                                <img src="/static/images/michelleimage.jpg" alt="Profile Photo">
+                            </div>
+                        </div>
+                        <div class="card__content">
+                            <div class="names">
+                                <h2>Michele Alexandra Romero Calero</h2>
+                                <h3>Data Analyst and Presentation Maker</h3>
+                            </div>
+                            <div class="about">
+                                <p><span><i class="fas fa-map-marker-alt"></i></span>  Spain</p>
+                                <p><span><i class="far fa-building"></i></span>  Grupo Verde</p>
+                                <p><span><i class="far fa-envelope"></i></span><a href="mailto:maromcal@upv.edu.es"> maromcal@upv.edu.es</a></p>
+                                <a href={{ url_for('michele') }} class="button">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Grupo Verde. Todos los derechos reservados.</p>
+        </footer>
+    </body>
+</html>
