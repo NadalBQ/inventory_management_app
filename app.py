@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import pandas as pd
 # from typing import List, Dict
 
-# i am trying
+
 app = Flask(__name__, static_url_path='/static')
 
 @app.route('/add_item', methods=['POST'])
