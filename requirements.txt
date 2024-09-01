@@ -22,4 +22,3 @@ Werkzeug==3.0.4
 xlrd==2.0.1
 XlsxWriter==3.2.0
 Gunicorn
-your_application
