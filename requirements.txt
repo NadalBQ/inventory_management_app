@@ -4,6 +4,7 @@ colorama==0.4.6
 defusedxml==0.7.1
 et-xmlfile==1.1.0
 Flask==3.0.3
+flask_cors
 itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==2.1.5
