@@ -68,7 +68,7 @@ def add_item():
 
     df.to_csv('./static/csvs/inventory.csv', index=False)
 
-    return jsonify({"Elemento añadido con éxito"})
+    return jsonify({'result': "Elemento añadido con éxito"})
 
 
     
