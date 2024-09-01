@@ -49,13 +49,29 @@ def michele():
 
 def add_item():
     data = request.json
-    pais = str(data['pais'])
+    df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
     
-    fuma = str(data['fuma']).lower()
+    
+    pais = str(data['pais'])
+    fuma = str(data['fuma'])
+
+
+    data = {'Age': [pais], 'Location': [fuma]}
+    new_row = pd.DataFrame(data, index=[len(df)])
+
+    
     print("data", data)
     print("pais", pais)
     print("fuma", fuma)
-    return jsonify({'result': data})
+
+    df = pd.concat([df, new_row])
+
+    df.to_csv('./static/csvs/inventory.csv', index=False)
+
+    return jsonify({"Elemento añadido con éxito"})
+
+
+    
     
     
     
