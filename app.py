@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-# from typing import List, Dict
+from github import Github
+import base64
+import io
 
 
+repository_name = "nadalbq/inventory_management_app"
+csv_file_path = "./static/csvs/inventory.csv"
 app = Flask(__name__, static_url_path='/static')
 # Web addresses
 
@@ -49,12 +53,19 @@ def michele():
 
 def add_item():
     data = request.json
-    df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
+
+
+    # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
     
-    
+    token = str(data['token'])
     pais = str(data['pais'])
     fuma = str(data['fuma'])
-
+    g = Github(token)
+    repository = g.get_repo(repository_name)
+    csv = repository.get_contents(csv_file_path)
+    decoded_csv = base64.b64decode(csv.content).decode('utf-8')
+    csv_io = io.StringIO(decoded_csv)
+    df = pd.read_csv(csv_io)
 
     data = {'Age': [pais], 'Location': [fuma]}
     new_row = pd.DataFrame(data, index=[len(df)])
@@ -66,7 +77,11 @@ def add_item():
 
     df = pd.concat([df, new_row])
 
-    df.to_csv('./static/csvs/inventory.csv', index=False)
+    # df.to_csv('./static/csvs/inventory.csv', index=False)
+
+    new_csv_content = df.to_csv(index=False)
+
+    repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
 
     return jsonify({'result': "Elemento añadido con éxito"})
 
@@ -75,23 +90,7 @@ def add_item():
     
     
     
-'''
-def add_item():
 
-    data = request.json
-    
-    df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
-
-    # data = {'Age': ['edad'], 'Location': ['lugar'], 'Name': ['nombre']}
-    # new_row = pd.DataFrame({'Age': ['edad'], 'Location': ['lugar'], 'Name': ['nombre']}, index=[len(df)],)
-    new_row = pd.DataFrame(data, index=[len(df)])
-
-    df = pd.concat([df, new_row])
-
-    df.to_csv('./static/csvs/inventory.csv', index=False)
-
-    return "Elemento añadido con éxito"
-'''
 
 @app.route('/edit_item', methods=['POST'])
 

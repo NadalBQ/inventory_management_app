@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function submitForm() {
+    const token = document.getElementById('token').value;
     const pais = document.getElementById('pais').value;
     const fuma = document.getElementById('fuma').value;
 
@@ -11,7 +12,7 @@ function submitForm() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ pais: pais, fuma: fuma })
+        body: JSON.stringify({ token: token, pais: pais, fuma: fuma })
     })
     .then(response => {
         if (!response.ok) {
