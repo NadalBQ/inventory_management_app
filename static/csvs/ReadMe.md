@@ -1,1 +1,1 @@
-The csv file used to make the analysis
+The csv file used to keep track of every item stored.
