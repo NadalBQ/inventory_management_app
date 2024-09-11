@@ -12,23 +12,29 @@
 
 <body>
     <header>
-        <h1>The Life Expectancy Project</h1>
+        <h1>Your inventory management app</h1>
         <nav>
             <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('aboutus') }}">About</a></li>
-                <li><a href="{{ url_for('theProject') }}">The Project</a></li>
-                <li><a href="{{ url_for('filesUsed') }}">Files</a></li>
+                <li><a href={{ url_for('home') }}><b>Home</b></a></li>
+                <li><a href={{ url_for('aboutus') }}>About</a></li>
+                <li><a href={{ url_for('theProject') }}>The Project</a></li>
             </ul>
         </nav>
     </header>
 
     <section class="nadalsection">
-        <h2>Sobre Nadal:</h2>
+        <h2>About Nadal:</h2>
         <section>
             <h3></h3>
-            <p>Curriculum no disponible, contacte con Nadal por correo si quiere más información.</p>
-            <p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p>
+            <p>Currently studying in second year of Data Science at Politechnic University of Valencia.</p>
+            <p>Nadal has been part of several projects 
+                such as <a href="https://github.com/Rafael-Bardisa/El-Beteador">"El Beteador"</a>, 
+                a project designed to calculate how much money someone should bet on each page and 
+                sportsperson in order to secure a benefit out of it.</p>
+            <p>Nadal has also worked on <a href="https://github.com/NadalBQ/flask-hello-world">"The Life Expectancy Project"</a>, 
+                a project made for a subject in the first year in the degree</p>
+            <p>Nadal is currently working on <a href="https://github.com/NadalBQ/inventory_management_app">"Inventory Management App"</a>, 
+                a work in progress that attempts to be an alternative to traditional inventory management care-taking ways</p>
         </section>
     </section>
 
