@@ -5,56 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/style.css">
-    <title>About Us Developers</title>
+    <title>Inventory management app</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
     <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <header>
-        <h1>The Life Expectancy Project</h1>
+        <h1>Your inventory management app</h1>
         <nav>
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('aboutus') }}">About</a></li>
                 <li><a href="{{ url_for('theProject') }}">The Project</a></li>
-                <li><a href="{{ url_for('filesUsed') }}">Files</a></li>
             </ul>
         </nav>
     </header>
 
     <section class="explainsection">
-        <h2>Cómo calculamos tu esperanza de vida:</h2>
+        <h2>Managing a room:</h2>
         <section>
-            <h3>La esperanza de vida</h3>
-            <p>La esperanza de vida es una predicción, de la edad a la que una persona morirá, basada en la media de las edades de muerte en un país.</p>
-            <p>Este número no se ajusta perfectamente a todos los casos, dada la varianza en las edades de muerte de las personas, pero sirve para hacerse una idea de la edad a la que se espera que, con tu nivel de vida actual, mueras.</p>
-            <p>Por muy triste que pueda parecer pensar en la fecha de muerte, queremos ofrecer un punto de vista que esperance a la gente, brindamos la oportunidad de cambiar tu estilo de vida para mejorar tu pronóstico, dejándo de fumar, bebiendo menos, adoptando dietas más saludables, comenzando algún deporte...</p>
+            <h3>How it all started.</h3>
+            <p>Managing a room is tiring and boring, many things must be remembered such as "where did I put this last time?" so that you can find it again the next time you are looking for a specific item.</p>
+            <p>I figured that, by removing the remembering factor, I could develop a more efficient way to manage information about items in a room, thus making it a lot less tiring, at the cost of inventoring one last time all your items into the database.</p>
+            <p>My approach is to make a web application that updates the values of the dataset at your will, making it easy for you to update whether you take or leave an item on the room, where it is, if it's inside of a box and even take notice of the amount of these items you have at your disposal.</p>
+            <p>My first thought when planning this app was "Can I do this without a program?" and the answer was yes, just stick a paper on the room's wall with a table to keep track of the items getting in and out and a pen lying around so you can update it easily, but that's not very helpful... What if I am at university and I want to check if I have blank sheets at home or not (to see if i need to buy some blank sheets or not before going home)? Well I figured that an online version of that paper would be very helpful and there comes the idea of not only seing what I have but also update that database wherever and whenever.</p>
         </section>
 
         <section>
-            <h3>Nosotros</h3>
-            <p>Nuestro interés personal por realizar este trabajo se basa en la evaluación del mismo para la asignatura "Proyecto I" del grado universitario en Ciencia de Datos de la Universitat Politècnica de València.</p>
-            <p>Por otro lado, el ámbito de la salud siempre nos ha interesado y queríamos aprovechar el tiempo y los medios a nuestra disposición para poder brindar un análisis útil para el resto de personas que no nos evalúan el trabajo y que, sin embargo, tienen un interés legítimo por él, para que puedan tomar el trabajo que hemos realizado y que les sirva como avance en sus proyectos e investigaciones.</p>
+            <h3>How it works.</h3>
+            <p>The first thing that I had to take into consideration was where to store this database, as it had to be visible to everybody but only updateable by trusted users (people at home). GitHub was my go-to place in this aspect, storing the code, the html and the csv file, only updateable by those who had the token.</p>
+            <p>The rest was easier, I just needed 4 things to work... Append new lines to the database, substract existent lines from the database, update existent lines of the database and visualize the data stored in the database; hence the 4 sections of the home page.</p>
         </section>
 
         <section>
-            <h3>La calculadora</h3>
-            <p>Lo que llamamos calculadora, es un modelo de regresión lineal entrenado con más de 8000 datos con variables nacionales de esperanza de vida, inversión en salud, renta per cápita, etc.</p>
-            <p>Este modelo lo utilizamos para predecir valores de esperanza de vida en base a otras 18 variables, proporcionando una estimación realmente precisa (+- 2 años) de la media de la esperanza de vida de los ciudadanos de un país.</p>
-
-        </section>
-
-        <section>
-            <h3>El resultado</h3>
-            <p>El resultado no tiene por qué ser la edad a la que vas a morir. Pero aproxima la edad media alrededor de la cual va a morir la gente del país que nos indiques.</p>
-            <p>Los resultados obtenidos durante la investigación llevada a cabo en la asignatura son concluyentes, dando a entender que fumar, beber alcohol, y tener colesterol alto bajan la esperanza de vida de los individuos de un país, y que los años de escolarización elevados, la inversión en sanidad y el Producto Interior Bruto aumentan la esperanza de vida de los individuos de un país.</p>
-            <p>Estos resultados son muy claros, pero no podemos utilizarlos para ofrecer una esperanza de vida individualizada con tu propia renta, tus años de escolarización y demás porque los datos trabajados son nacionales y no individuales.</p>
+            <h3>About me</h3>
+            <p>Find out more about me at the <a href="{{ url_for('aboutus') }}">About</a> section!</p>
+            <p>It was on my best interest to make it easier to manage the items stored in a room as keeping track of so many items in such a big room can become very difficult as years go by and items keep coming in. Surely I'm not the only one, some guy at some point must have forgotten about something and long after rediscovered it on an old closet or box.</p>
         </section>
     </section>
 
     <footer>
-        <p>&copy; 2024 Grupo Verde. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
     </footer>
 </body>
 </html>
