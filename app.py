@@ -58,8 +58,11 @@ def add_item():
     # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
     
     token = str(data['token'])
-    pais = str(data['pais'])
-    fuma = str(data['fuma'])
+    ID = str(data['ID'])
+    Location = str(data['location'])
+    Amount = str(data['amount'])
+    Parent = str(data['parent'])
+    Type = str(data['Type'])
     g = Github(token)
     repository = g.get_repo(repository_name)
     csv = repository.get_contents(csv_file_path)
@@ -67,13 +70,12 @@ def add_item():
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
 
-    data = {'Age': [pais], 'Location': [fuma]}
+    data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location], 'Parent': [Parent], 'Type': [Type]}
     new_row = pd.DataFrame(data, index=[len(df)])
 
     
     print("data", data)
-    print("pais", pais)
-    print("fuma", fuma)
+    print("__" + ID + "__")
 
     df = pd.concat([df, new_row])
 
