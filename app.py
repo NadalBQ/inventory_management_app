@@ -62,7 +62,7 @@ def add_item():
     Location = str(data['location'])
     Amount = str(data['amount'])
     Parent = str(data['parent'])
-    Type = str(data['Type'])
+    Type = str(data['Type']).lower().capitalize()
     g = Github(token)
     repository = g.get_repo(repository_name)
     csv = repository.get_contents(csv_file_path)
