@@ -1,4 +1,4 @@
-# My first try at making an app
+# My first attempt at making an app
 My personal inventory management app, designed for the tracking of inputs and outputs on my private storage room.
 
 
