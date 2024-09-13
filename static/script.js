@@ -27,10 +27,10 @@ function submitForm() {
         if (data.error) {
             throw new Error(data.error);
         }
-        document.getElementById('resultDiv').innerText = 'Result: ' + data.result;
+        document.getElementById('resultDivAdd').innerText = 'Result: ' + data.result;
     })
     .catch(error => {
         console.error('Error:', error);
-        document.getElementById('resultDiv').innerText = 'An error occurred: ' + error.message;
+        document.getElementById('resultDivAdd').innerText = 'An error occurred: ' + error.message;
     });
 }

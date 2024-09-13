@@ -270,7 +270,15 @@ feature-item h3 {
 
 
 
-.resultDiv {
+.resultDivAdd {
+    padding: 10px;
+}
+
+.resultDivSubtract {
+    padding: 10px;
+}
+
+.resultDivUpdate {
     padding: 10px;
 }
 
