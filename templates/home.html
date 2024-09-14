@@ -34,6 +34,8 @@
             <section class="inputLabels">
                 <h2>This page is currently managing a room of mine.</h2>
 
+                <h3>Add a new element to the database:</h3>
+
                 <form action="/execute-script" method="post">
                     <label for "valor">GitHub token:</label>
                     <input type="text" name="token" id="token"><br>
@@ -50,6 +52,20 @@
                     <button class="button" type="button" id="executeButton">Upload element to database</button>
                 </form>
 
+                <h3>Delete an element from the database:</h3>
+
+                <form action="/execute-script" method="post">
+                    <label for "valor">GitHub token:</label>
+                    <input type="text" name="token" id="token"><br>
+                    <label for "valor">Element ID:</label>
+                    <input type="text" name="ID" id="ID"><br>
+                    <label for "valor">Amount to delete:</label>
+                    <input type="text" name="amount" id="amount"><br>
+                    <label for "valor">Location:</label>
+                    <input type="text" name="location" id="location"><br>
+                    
+                    <button class="button" type="button" id="deleteButton">Delete element from database</button>
+                </form>
                 
 
                 <div id="resultDivAdd" class="resultDivAdd"></div>

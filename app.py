@@ -73,8 +73,72 @@ def add_item():
 
     repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
 
-    return jsonify({'result': "Elemento añadido con éxito"})
+    return jsonify({'result': "Element added effectively"})
 
+
+
+
+
+@app.route('/del_item', methods=['POST'])
+
+def del_item():
+    data = request.json
+
+
+    # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
+    
+    token = str(data['token'])
+    ID = str(data['ID'])
+    Location = str(data['location'])
+    Amount = str(data['amount'])
+    
+
+    g = Github(token)
+    repository = g.get_repo(repository_name)
+    csv = repository.get_contents(csv_file_path)
+    decoded_csv = base64.b64decode(csv.content).decode('utf-8')
+    csv_io = io.StringIO(decoded_csv)
+    df = pd.read_csv(csv_io)
+
+    # data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location]}
+    if not ID:
+        print("Tried to delete element without ID reference")
+        return jsonify({'result': "No ID was received, could not delete element."})
+    if not Location:
+        if not Amount:
+            df = df[~(df['ID'].eq(ID))]
+            print(f"Deleted every element with ID={ID}")
+            return jsonify({'result': "Element deleted effectively."})
+        if not Amount == df.loc[df['ID'].eq(ID),"Amount"]:
+            df = df[~(df['ID'].eq(ID))]
+            print(f"Deleted every element with ID={ID}")
+            return jsonify({'result': "Element deleted effectively."})
+        # .loc[row_indexer,col_indexer] = value
+        df.loc[df['ID'].eq(ID),"Amount"] -= Amount
+        print(f"Deleted {Amount} units of element with ID={ID}")
+        return jsonify({'result': "Element amount updated effectively."})
+    # Finish these lines!!!
+    if not Amount
+        
+        print(f"Deleted every element with ID={ID}")
+        return jsonify({'result': "Element deleted effectively."})
+        
+    df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location) & df['Amount'].eq(Amount))]
+    
+
+    
+    print("data", data)
+    print("__" + ID + "__")
+
+    df = pd.concat([df, new_row])
+
+    # df.to_csv('./static/csvs/inventory.csv', index=False)
+
+    new_csv_content = df.to_csv(index=False)
+
+    repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
+
+    return jsonify({'result': "Elemento añadido con éxito"})
 
     
     
