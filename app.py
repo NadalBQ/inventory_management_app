@@ -34,7 +34,9 @@ def nadal():
 
 
 
-
+def updateDataframe(repository, df, csv):
+    new_csv_content = df.to_csv(index=False)
+    repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
 
 @app.route('/add_item', methods=['POST'])
 
@@ -69,10 +71,7 @@ def add_item():
 
     # df.to_csv('./static/csvs/inventory.csv', index=False)
 
-    new_csv_content = df.to_csv(index=False)
-
-    repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
-
+    updateDataframe(repository, df, csv)
     return jsonify({'result': "Element added effectively"})
 
 
@@ -101,44 +100,90 @@ def del_item():
     df = pd.read_csv(csv_io)
 
     # data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location]}
+
+    # If User does not provide an ID:
     if not ID:
         print("Tried to delete element without ID reference")
         return jsonify({'result': "No ID was received, could not delete element."})
+    
+    # If User provides ID but no further information:
     if not Location:
         if not Amount:
-            df = df[~(df['ID'].eq(ID))]
-            print(f"Deleted every element with ID={ID}")
-            return jsonify({'result': "Element deleted effectively."})
-        if not Amount == df.loc[df['ID'].eq(ID),"Amount"]:
-            df = df[~(df['ID'].eq(ID))]
-            print(f"Deleted every element with ID={ID}")
-            return jsonify({'result': "Element deleted effectively."})
+            try:
+                df = df[~(df['ID'].eq(ID))]
+                print(f"Deleted every element with ID={ID}")
+                updateDataframe(repository, df, csv)
+                return jsonify({'result': "Element deleted effectively."})
+            except:
+                print(Exception)
+                return jsonify({'result': "The specified ID was not found in the database\nException: {Exception.__name__}"})
+        
+        
+        # If User provides ID and The exact amount there is of that element:
+        elif int(Amount) == df.loc[df['ID'].eq(ID),"Amount"]:
+            try:
+                df = df[~(df['ID'].eq(ID))]
+                print(f"Deleted every element with ID={ID}")
+                updateDataframe(repository, df, csv)
+                return jsonify({'result': "Element deleted effectively."})
+            except:
+                print(Exception)
+                return jsonify({'result': "The specified ID was not found in the database\nException: {Exception.__name__}"})
         # .loc[row_indexer,col_indexer] = value
-        df.loc[df['ID'].eq(ID),"Amount"] -= Amount
-        print(f"Deleted {Amount} units of element with ID={ID}")
-        return jsonify({'result': "Element amount updated effectively."})
+        
+        
+        # If the User provides ID and the amount to delete of that element:
+        try:
+            df.loc[df['ID'].eq(ID),"Amount"] -= int(Amount)
+            print(f"Deleted {Amount} units of element with ID={ID}")
+            updateDataframe(repository, df, csv)
+            return jsonify({'result': "Element amount updated effectively."})
+        except:
+            print(Exception)
+            return jsonify({'result': "The specified ID was not found in the database\nException: {Exception.__name__}"})
     # Finish these lines!!!
-    if not Amount
-        
-        print(f"Deleted every element with ID={ID}")
-        return jsonify({'result': "Element deleted effectively."})
-        
-    df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location) & df['Amount'].eq(Amount))]
+    # check if df.loc[df['ID'].eq(ID),"Amount"] is an int or convertible to int
     
-
     
-    print("data", data)
-    print("__" + ID + "__")
+    
+    # If User provides ID and Location of element:
+    elif not Amount:
+        try:
+            df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
+            print(f"Deleted every element with ID={ID} and Location={Location}")
+            updateDataframe(repository, df, csv)
+            return jsonify({'result': "Element deleted effectively."})
+        except:
+            print(Exception)
+            return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
+    
+    # If User provides ID, Location and the exact Amount there is of that element:
+    elif int(Amount) == df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"]:
+            try:
+                df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
+                print(f"Deleted every element with ID={ID} and Location={Location}")
+                updateDataframe(repository, df, csv)
+                return jsonify({'result': "Element deleted effectively."})
+            except:
+                print(Exception)
+                return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
+  
+    
+    #If User provides ID, Location and Amount of element:
+    else:
+        try:
+            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"] -= int(Amount)
+            print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
+            updateDataframe(repository, df, csv)
+            return jsonify({'result': "Element amount updated effectively."})
+        except:
+            print(Exception)
+            return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
+        
+        
+        
+    # df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location) & df['Amount'].eq(Amount))]
 
-    df = pd.concat([df, new_row])
-
-    # df.to_csv('./static/csvs/inventory.csv', index=False)
-
-    new_csv_content = df.to_csv(index=False)
-
-    repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
-
-    return jsonify({'result': "Elemento añadido con éxito"})
 
     
     
