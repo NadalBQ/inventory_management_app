@@ -33,79 +33,83 @@
         
             <section class="inputLabels">
                 <h2>This page is currently managing a room of mine.</h2>
+                <div class="form" id="formAdd">
+                    <h3>Add a new element to the database:</h3>
 
-                <h3>Add a new element to the database:</h3>
+                    <form action="/execute-script" method="post">
+                        <label for "valor">GitHub token:</label>
+                        <input type="text" name="token" id="token"><br>
+                        <label for "valor">Element ID:</label>
+                        <input type="text" name="ID" id="ID"><br>
+                        <label for "valor">Amount stored:</label>
+                        <input type="text" name="amount" id="amount"><br>
+                        <label for "valor">Location:</label>
+                        <input type="text" name="location" id="location"><br>
+                        <label for "valor">Inside of:</label>
+                        <input type="text" name="parent" id="parent"><br>
+                        <label for "valor">Box or Item:</label>
+                        <input type="text" name="whichType" id="whichType"><br>
+                        <button class="button" type="button" id="executeButton">Upload element to database</button>
+                    </form>
 
-                <form action="/execute-script" method="post">
-                    <label for "valor">GitHub token:</label>
-                    <input type="text" name="token" id="token"><br>
-                    <label for "valor">Element ID:</label>
-                    <input type="text" name="ID" id="ID"><br>
-                    <label for "valor">Amount stored:</label>
-                    <input type="text" name="amount" id="amount"><br>
-                    <label for "valor">Location:</label>
-                    <input type="text" name="location" id="location"><br>
-                    <label for "valor">Inside of:</label>
-                    <input type="text" name="parent" id="parent"><br>
-                    <label for "valor">Box or Item:</label>
-                    <input type="text" name="whichType" id="whichType"><br>
-                    <button class="button" type="button" id="executeButton">Upload element to database</button>
-                </form>
-
-                
-                <div id="resultDivAdd" class="resultDivAdd"></div>
-
-                <h3>Delete an element from the database:</h3>
-
-                <form action="/execute-script" method="post">
-                    <label for "valor">GitHub token:</label>
-                    <input type="text" name="token" id="token"><br>
-                    <label for "valor">Element ID:</label>
-                    <input type="text" name="ID" id="ID"><br>
-                    <label for "valor">Amount to delete:</label>
-                    <input type="text" name="amount" id="amount"><br>
-                    <label for "valor">Location:</label>
-                    <input type="text" name="location" id="location"><br>
                     
-                    <button class="button" type="button" id="deleteButton">Delete element from database</button>
-                </form>
+                    <div id="resultDivAdd" class="resultDivAdd"></div>
+                </div>
 
-                
-                <div id="resultDivSub" class="resultDivSub"></div>
+                <div class="form" id="formDel">
+                    <h3>Delete an element from the database:</h3>
 
+                    <form action="/execute-script" method="post">
+                        <label for "valor">GitHub token:</label>
+                        <input type="text" name="token" id="token"><br>
+                        <label for "valor">Element ID:</label>
+                        <input type="text" name="ID" id="ID"><br>
+                        <label for "valor">Amount to delete:</label>
+                        <input type="text" name="amount" id="amount"><br>
+                        <label for "valor">Location:</label>
+                        <input type="text" name="location" id="location"><br>
+                        
+                        <button class="button" type="button" id="deleteButton">Delete element from database</button>
+                    </form>
 
-                <h3>Update an element from the database:</h3>
-
-                <form action="/execute-script" method="post">
-                    <label for "valor">GitHub token:</label>
-                    <input type="text" name="token" id="token"><br>
-                    <label for "valor">Past ID:</label>
-                    <input type="text" name="pastID" id="pastID"><br>
-                    <label for "valor">Past amount:</label>
-                    <input type="text" name="pastAmount" id="pastAmount"><br>
-                    <label for "valor">Past location:</label>
-                    <input type="text" name="pastLocation" id="pastLocation"><br>
-                    <label for "valor">Past parent:</label>
-                    <input type="text" name="pastParent" id="pastParent"><br>
-                    <label for "valor">Past type (box or item):</label>
-                    <input type="text" name="pastWhichType" id="pastWhichType"><br>
-
-                    <label for "valor">New ID:</label>
-                    <input type="text" name="newID" id="newID"><br>
-                    <label for "valor">New amount:</label>
-                    <input type="text" name="newAmount" id="newAmount"><br>
-                    <label for "valor">New location:</label>
-                    <input type="text" name="newLocation" id="newLocation"><br>
-                    <label for "valor">New parent:</label>
-                    <input type="text" name="newParent" id="newParent"><br>
-                    <label for "valor">New type (box or item):</label>
-                    <input type="text" name="newWhichType" id="newWhichType"><br>
                     
-                    <button class="button" type="button" id="updateButton">Update element from database</button>
-                </form>
-                
+                    <div id="resultDivSub" class="resultDivSub"></div>
+                </div>
 
-                <div id="resultDivUpd" class="resultDivUpd"></div>
+                <div class="form" id="formUpd">
+                    <h3>Update an element from the database:</h3>
+
+                    <form action="/execute-script" method="post">
+                        <label for "valor">GitHub token:</label>
+                        <input type="text" name="token" id="token"><br>
+                        <label for "valor">Past ID:</label>
+                        <input type="text" name="pastID" id="pastID"><br>
+                        <label for "valor">Past amount:</label>
+                        <input type="text" name="pastAmount" id="pastAmount"><br>
+                        <label for "valor">Past location:</label>
+                        <input type="text" name="pastLocation" id="pastLocation"><br>
+                        <label for "valor">Past parent:</label>
+                        <input type="text" name="pastParent" id="pastParent"><br>
+                        <label for "valor">Past type (box or item):</label>
+                        <input type="text" name="pastWhichType" id="pastWhichType"><br>
+
+                        <label for "valor">New ID:</label>
+                        <input type="text" name="newID" id="newID"><br>
+                        <label for "valor">New amount:</label>
+                        <input type="text" name="newAmount" id="newAmount"><br>
+                        <label for "valor">New location:</label>
+                        <input type="text" name="newLocation" id="newLocation"><br>
+                        <label for "valor">New parent:</label>
+                        <input type="text" name="newParent" id="newParent"><br>
+                        <label for "valor">New type (box or item):</label>
+                        <input type="text" name="newWhichType" id="newWhichType"><br>
+                        
+                        <button class="button" type="button" id="updateButton">Update element from database</button>
+                    </form>
+                    
+
+                    <div id="resultDivUpd" class="resultDivUpd"></div>
+                </div>
             </section>
         </section>
 

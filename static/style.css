@@ -456,3 +456,7 @@ footer {
     opacity: 70%;
     background-color: #e3ffd8a9;
 }
+
+.form {
+    padding: 20px;
+}
