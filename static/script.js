@@ -49,7 +49,7 @@ function delElement() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ token: token, ID: ID, location: location, amount: amount, parent: parent, Type: Type })
+        body: JSON.stringify({ token: token, ID: ID, location: location, amount: amount})
     })
     .then(response => {
         if (!response.ok) {
