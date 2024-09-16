@@ -53,7 +53,7 @@ def add_item():
     Parent = str(data['parent'])
     Type = str(data['Type']).lower().capitalize()
 
-    print("delete item: " + token, ID, Location, Amount, Parent, Type)
+    print("add item: " + token, ID, Location, Amount, Parent, Type)
 
     g = Github(token)
     repository = g.get_repo(repository_name)
