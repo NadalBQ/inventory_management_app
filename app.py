@@ -195,10 +195,27 @@ def del_item():
 
 def edit_item():
     data = request.json
-    past_df_element, new_df_element = data[0], data[1]
-    df.replace(past_df_element, new_df_element)
-    df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
 
-    df.to_csv('./static/csvs/inventory.csv', index=False)
+    token = str(data['token'])
+    pastID = str(data['pastID'])
+    newID = str(data['newID'])
+    pastLocation = str(data['pastLocation'])
+    newLocation = str(data['newLocation'])
+    pastAmount = str(data['pastAmount'])
+    newAmount = str(data['newAmount'])
+    pastParent = str(data['pastParent'])
+    newParent = str(data['newParent'])
+    pastType = str(data['pastType']).lower().capitalize()
+    newType = str(data['newType']).lower().capitalize()
+
+    g = Github(token)
+    repository = g.get_repo(repository_name)
+    csv = repository.get_contents(csv_file_path)
+    decoded_csv = base64.b64decode(csv.content).decode('utf-8')
+    csv_io = io.StringIO(decoded_csv)
+    df = pd.read_csv(csv_io)
+
+
+
 
     return "Atributo/s cambiado/s con éxito"
