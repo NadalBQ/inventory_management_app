@@ -84,10 +84,7 @@ def add_item():
 
 def del_item():
     data = request.json
-
-
-    # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
-    
+    print("DATA_____________________________", data)
     token = str(data['token'])
     ID = str(data['ID'])
     Location = str(data['location'])
