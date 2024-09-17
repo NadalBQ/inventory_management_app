@@ -62,19 +62,21 @@ def add_item():
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
 
-    if (df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type)):
-        df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"].iloc[0]) + int(Amount)
-    else:
+    
+    # If given element already exists in the database, only add amount to the stored amount
+    try:
+        if df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"].iloc[0] != None:
+            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"].iloc[0]) + int(Amount)
+            print("\nThe element was already part of the database so amounts were added together\n")
+    
+    # If given element does not already exist in the database, append a new line to it.
+    except Exception as e:
+        print("User tried adding new element to the database")
         data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location], 'Parent': [Parent], 'Type': [Type]}
         new_row = pd.DataFrame(data, index=[len(df)])
+        df = pd.concat([df, new_row])
 
-    
-    print("data", data)
-    print("__" + ID + "__")
-
-    df = pd.concat([df, new_row])
-
-    # df.to_csv('./static/csvs/inventory.csv', index=False)
+        # df.to_csv('./static/csvs/inventory.csv', index=False)
 
     updateDataframe(repository, df, csv)
     return jsonify({'result': "Element added effectively"})
