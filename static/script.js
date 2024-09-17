@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function addElement() {
     const token = document.getElementById('addtoken').value;
     const ID = document.getElementById('addID').value;
-    const location = document.getElementById('addlocation').value;
-    const amount = document.getElementById('addamount').value;
-    const parent = document.getElementById('addparent').value;
-    const Type = document.getElementById('addwhichType').value;
+    const location = document.getElementById('addlocation').value || "0";
+    const amount = document.getElementById('addamount').value || "1";
+    const parent = document.getElementById('addparent').value || "Trastero";
+    const Type = document.getElementById('addwhichType').value || "Item";
 
     fetch('/add_item', {
         method: 'POST',
@@ -40,8 +40,8 @@ function addElement() {
 function delElement() {
     const token = document.getElementById('deltoken').value;
     const ID = document.getElementById('delID').value;
-    const location = document.getElementById('dellocation').value;
-    const amount = document.getElementById('delamount').value;
+    const location = document.getElementById('dellocation').value || "0";
+    const amount = document.getElementById('delamount').value || "1";
     
 
     fetch('/del_item', {
@@ -72,16 +72,16 @@ function delElement() {
 function updElement() {
     const token = document.getElementById('updtoken').value;
     const pastID = document.getElementById('pastID').value;
-    const pastLocation = document.getElementById('pastLocation').value;
-    const pastAmount = document.getElementById('pastAmount').value;
-    const pastParent = document.getElementById('pastParent').value;
-    const pastType = document.getElementById('pastWhichType').value;
+    const pastLocation = document.getElementById('pastLocation').value || "0";
+    const pastAmount = document.getElementById('pastAmount').value || "1";
+    const pastParent = document.getElementById('pastParent').value || "Trastero";
+    const pastType = document.getElementById('pastWhichType').value || "Item";
 
     const newID = document.getElementById('newID').value;
-    const newLocation = document.getElementById('newLocation').value;
-    const newAmount = document.getElementById('newAmount').value;
-    const newParent = document.getElementById('newParent').value;
-    const newType = document.getElementById('newWhichType').value;
+    const newLocation = document.getElementById('newLocation').value || "0";
+    const newAmount = document.getElementById('newAmount').value || "1";
+    const newParent = document.getElementById('newParent').value || "Trastero";
+    const newType = document.getElementById('newWhichType').value || "Item";
 
     fetch('/add_item', {
         method: 'POST',
