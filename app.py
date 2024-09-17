@@ -62,8 +62,11 @@ def add_item():
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
 
-    data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location], 'Parent': [Parent], 'Type': [Type]}
-    new_row = pd.DataFrame(data, index=[len(df)])
+    if (df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type)):
+        df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"].iloc[0]) + int(Amount)
+    else:
+        data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location], 'Parent': [Parent], 'Type': [Type]}
+        new_row = pd.DataFrame(data, index=[len(df)])
 
     
     print("data", data)
