@@ -119,7 +119,7 @@ def del_item():
         
         
         # If User provides ID and The exact amount there is of that element:
-        elif int(Amount) == int(df.loc[df['ID'].eq(ID),"Amount"]):
+        elif int(Amount) == df.loc[df['ID'].eq(ID),"Amount"].astype(int):
             try:
                 df = df[~(df['ID'].eq(ID))]
                 print(f"Deleted every element with ID={ID}")
@@ -133,7 +133,7 @@ def del_item():
         
         # If the User provides ID and the amount to delete of that element:
         try:
-            df.loc[df['ID'].eq(ID),"Amount"] = int(df.loc[df['ID'].eq(ID),"Amount"]) - int(Amount)
+            df.loc[df['ID'].eq(ID),"Amount"] = df.loc[df['ID'].eq(ID),"Amount"].astype(int) - int(Amount)
             print(f"Deleted {Amount} units of element with ID={ID}")
             updateDataframe(repository, df, csv)
             return jsonify({'result': "Element amount updated effectively."})
@@ -157,7 +157,7 @@ def del_item():
             return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
     
     # If User provides ID, Location and the exact Amount there is of that element:
-    elif int(Amount) == int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"]):
+    elif int(Amount) == df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"].astype(int):
             try:
                 df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
                 print(f"Deleted every element with ID={ID} and Location={Location}")
@@ -171,7 +171,7 @@ def del_item():
     #If User provides ID, Location and Amount of element:
     else:
         try:
-            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"]) - int(Amount)
+            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"] = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"].astype(int) - int(Amount)
             print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
             updateDataframe(repository, df, csv)
             return jsonify({'result': "Element amount updated effectively."})
