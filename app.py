@@ -40,8 +40,9 @@ def updateDataframe(repository, df, csv):
 
 @app.route('/add_item', methods=['POST'])
 
-def add_item():
-    data = request.json
+def add_item(edit: bool=False, data=None):
+    if not edit:
+        data = request.json
 
 
     # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
@@ -79,7 +80,9 @@ def add_item():
         # df.to_csv('./static/csvs/inventory.csv', index=False)
 
     updateDataframe(repository, df, csv)
-    return jsonify({'result': "Element added effectively"})
+    if not edit:
+        return jsonify({'result': "Element added effectively"})
+    return None
 
 
 
@@ -87,8 +90,10 @@ def add_item():
 
 @app.route('/del_item', methods=['POST'])
 
-def del_item():
-    data = request.json
+def del_item(edit: bool=False, data=None):
+    if not edit:
+        data = request.json
+        
     print("DATA_____________________________", data)
     token = str(data['token'])
     ID = str(data['ID'])
@@ -110,64 +115,15 @@ def del_item():
         print("Tried to delete element without ID reference")
         return jsonify({'result': "No ID was received, could not delete element."})
     
-    # If User provides ID but no further information:
-    if not Location:
-        if not Amount:
-            try:
-                df = df[~(df['ID'].eq(ID))]
-                print(f"Deleted every element with ID={ID}")
-                updateDataframe(repository, df, csv)
-                return jsonify({'result': "Element deleted effectively."})
-            except:
-                print(Exception)
-                return jsonify({'result': "The specified ID was not found in the database\nException: {Exception.__name__}"})
-        
-        
-        # If User provides ID and The exact amount there is of that element:
-        elif int(Amount) == int(df.loc[df['ID'].eq(ID),"Amount"].iloc[0]):
-            try:
-                df = df[~(df['ID'].eq(ID))]
-                print(f"Deleted every element with ID={ID}")
-                updateDataframe(repository, df, csv)
-                return jsonify({'result': "Element deleted effectively."})
-            except:
-                print(Exception)
-                return jsonify({'result': "The specified ID was not found in the database\nException: {Exception.__name__}"})
-        # .loc[row_indexer,col_indexer] = value
-        
-        
-        # If the User provides ID and the amount to delete of that element:
-        try:
-            df.loc[df['ID'].eq(ID),"Amount"] = int(df.loc[df['ID'].eq(ID),"Amount"].iloc[0]) - int(Amount)
-            print(f"Deleted {Amount} units of element with ID={ID}")
-            updateDataframe(repository, df, csv)
-            return jsonify({'result': "Element amount updated effectively."})
-        except:
-            print(Exception)
-            return jsonify({'result': "The specified ID was not found in the database\nException: {Exception.__name__}"})
-    # Finish these lines!!!
-    # check if df.loc[df['ID'].eq(ID),"Amount"] is an int or convertible to int
-    
-    
-    
-    # If User provides ID and Location of element:
-    elif not Amount:
-        try:
-            df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
-            print(f"Deleted every element with ID={ID} and Location={Location}")
-            updateDataframe(repository, df, csv)
-            return jsonify({'result': "Element deleted effectively."})
-        except:
-            print(Exception)
-            return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
-    
     # If User provides ID, Location and the exact Amount there is of that element:
     elif int(Amount) == int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"].iloc[0]):
             try:
                 df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
                 print(f"Deleted every element with ID={ID} and Location={Location}")
                 updateDataframe(repository, df, csv)
-                return jsonify({'result': "Element deleted effectively."})
+                if not edit:
+                    return jsonify({'result': "Element deleted effectively."})
+                return None
             except:
                 print(Exception)
                 return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
@@ -179,7 +135,9 @@ def del_item():
             df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"].iloc[0]) - int(Amount)
             print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
             updateDataframe(repository, df, csv)
-            return jsonify({'result': "Element amount updated effectively."})
+            if not edit:
+                return jsonify({'result': "Element amount updated effectively."})
+            return None
         except:
             print(Exception)
             return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
@@ -187,12 +145,6 @@ def del_item():
         
         
     # df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location) & df['Amount'].eq(Amount))]
-
-
-    
-    
-    
-    
 
 
 @app.route('/edit_item', methods=['POST'])
@@ -212,14 +164,16 @@ def edit_item():
     pastType = str(data['pastType']).lower().capitalize()
     newType = str(data['newType']).lower().capitalize()
 
-    g = Github(token)
-    repository = g.get_repo(repository_name)
-    csv = repository.get_contents(csv_file_path)
-    decoded_csv = base64.b64decode(csv.content).decode('utf-8')
-    csv_io = io.StringIO(decoded_csv)
-    df = pd.read_csv(csv_io)
+    deldata = {'token': [token], 'ID': [pastID], 'amount': [pastAmount], 'location': [pastLocation]}
+    adddata = {'token': [token], 'ID': [newID], 'amount': [newAmount], 'location': [newLocation], 'parent': [newParent], 'Type': [newType]}
 
-
-
-
-    return "Atributo/s cambiado/s con éxito"
+    # Update all values to the new attributes
+    a = del_item(True, deldata)
+    if a != None:
+        add_item(True, adddata)
+    else: return "An exception occured while deleting past element"
+    
+    # Save the csv to github and close the function (both del_item and add_item update that)
+    
+    # Post the action status on the web.
+    return "Atribute/s updated effectively"
