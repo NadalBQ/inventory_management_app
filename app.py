@@ -95,7 +95,7 @@ def del_item(edit: bool=False, deldata=None):
     if not edit:
         deldata = request.json
     print("delitem2")
-    print("DATA_____________________________", data)
+    print("DATA_____________________________", deldata)
     token = str(deldata['token'])
     ID = str(deldata['ID'])
     Location = str(deldata['location'])
