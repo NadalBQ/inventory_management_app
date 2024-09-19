@@ -46,7 +46,7 @@ def add_item(edit: bool=False, data=None):
 
 
     # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
-    
+    print(data, edit)
     token = str(data['token'])
     ID = str(data['ID'])
     Location = str(data['location'])
