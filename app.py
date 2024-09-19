@@ -40,19 +40,19 @@ def updateDataframe(repository, df, csv):
 
 @app.route('/add_item', methods=['POST'])
 
-def add_item(edit: bool=False, data=None):
+def add_item(edit: bool=False, adddata=None):
     if not edit:
-        data = request.json
-
+        adddata = request.json
+    
 
     # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
-    print(data, edit)
-    token = str(data['token'])
-    ID = str(data['ID'])
-    Location = str(data['location'])
-    Amount = str(data['amount'])
-    Parent = str(data['parent'])
-    Type = str(data['Type']).lower().capitalize()
+    print(adddata, edit)
+    token = str(adddata['token'])
+    ID = str(adddata['ID'])
+    Location = str(adddata['location'])
+    Amount = str(adddata['amount'])
+    Parent = str(adddata['parent'])
+    Type = str(adddata['Type']).lower().capitalize()
 
     print("add item: " + token, ID, Location, Amount, Parent, Type)
 
@@ -90,15 +90,15 @@ def add_item(edit: bool=False, data=None):
 
 @app.route('/del_item', methods=['POST'])
 
-def del_item(edit: bool=False, data=None):
+def del_item(edit: bool=False, deldata=None):
     if not edit:
-        data = request.json
+        deldata = request.json
         
     print("DATA_____________________________", data)
-    token = str(data['token'])
-    ID = str(data['ID'])
-    Location = str(data['location'])
-    Amount = str(data['amount'])
+    token = str(deldata['token'])
+    ID = str(deldata['ID'])
+    Location = str(deldata['location'])
+    Amount = str(deldata['amount'])
     print("delete item: " + token, ID, Location, Amount)
 
     g = Github(token)
@@ -166,7 +166,7 @@ def edit_item():
 
     deldata = {'token': [token], 'ID': [pastID], 'amount': [pastAmount], 'location': [pastLocation]}
     adddata = {'token': [token], 'ID': [newID], 'amount': [newAmount], 'location': [newLocation], 'parent': [newParent], 'Type': [newType]}
-
+    print(deldata, adddata, data)
     # Update all values to the new attributes
     a = del_item(True, deldata)
     if a != None:
