@@ -91,9 +91,10 @@ def add_item(edit: bool=False, adddata=None):
 @app.route('/del_item', methods=['POST'])
 
 def del_item(edit: bool=False, deldata=None):
+    print("delitem1")
     if not edit:
         deldata = request.json
-        
+    print("delitem2")
     print("DATA_____________________________", data)
     token = str(deldata['token'])
     ID = str(deldata['ID'])
@@ -167,8 +168,11 @@ def edit_item():
     deldata = {'token': [token], 'ID': [pastID], 'amount': [pastAmount], 'location': [pastLocation]}
     adddata = {'token': [token], 'ID': [newID], 'amount': [newAmount], 'location': [newLocation], 'parent': [newParent], 'Type': [newType]}
     print(deldata, adddata, data)
+    print("_" * 50)
+    print("*"*50)
     # Update all values to the new attributes
     a = del_item(True, deldata)
+    print("\nafter delitem\n")
     if a != None:
         add_item(True, adddata)
     else: return "An exception occured while deleting past element"
