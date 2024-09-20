@@ -150,8 +150,9 @@ def del_item(edit: bool=False, deldata=None):
 
 @app.route('/edit_item', methods=['POST'])
 
-def edit_item():
-    data = request.json
+def edit_item(data=None):
+    if data == None:
+        data = request.json
 
     token = str(data['token'])
     pastID = str(data['pastID'])
@@ -171,8 +172,9 @@ def edit_item():
     print("_" * 50)
     print("*"*50)
     # Update all values to the new attributes
-    a = del_item(True, deldata)
-    print("\nafter delitem\n")
+    #a = del_item(True, deldata)
+    a =3
+    print("\nafter delitem (only doing add)\n\n")
     if a != None:
         add_item(True, adddata)
     else: return "An exception occured while deleting past element"
@@ -181,3 +183,7 @@ def edit_item():
     
     # Post the action status on the web.
     return "Atribute/s updated effectively"
+
+
+# debugging:
+# edit_item({ 'token': 'No token for you', 'pastID': 'jaja', 'newID': 'jaja', 'pastLocation': '1', 'newLocation': '0', 'pastAmount': '80', 'newAmount': '5', 'pastParent': 'caja1', 'newParent': 'Trastero', 'pastType': 'Item', 'newType': 'Item' })
