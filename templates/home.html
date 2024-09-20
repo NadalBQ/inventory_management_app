@@ -1,120 +1,107 @@
-<!--index copy html-->
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-        <title>Your inventory management app</title>
-        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
-        <!--"../images/favicon.ico"-->
-        <link rel="stylesheet" href="../static/style.css">
-        <script src="../static/script.js" defer></script>
-    </head>
-    <body>
-        <header>
-            <h1>Your inventory management app</h1>
-            <nav>
-                <ul>
-                    <li><a href={{ url_for('home') }}><b>Home</b></a></li>
-                    <li><a href={{ url_for('aboutus') }}>About</a></li>
-                    <li><a href={{ url_for('theProject') }}>The Project</a></li>
-                </ul>
-            </nav>
-        </header>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    <title>Your Inventory Management App</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="../static/script.js" defer></script> <!-- Load the external JS -->
+</head>
+<body>
+    <header>
+        <h1>Your Inventory Management App</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}"><b>Home</b></a></li>
+                <li><a href="{{ url_for('aboutus') }}">About</a></li>
+                <li><a href="{{ url_for('theProject') }}">The Project</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <section class="homeSection">
-            <section class="inputHeaders">
-                <h2>Manage all your items with one app!</h2>
-                <p><b>Take your GitHub token and start managing.</b></p>
-                <p><b>You can copy whichever part of this project and implement it on your own room.</b></p>
-                <p><b>However, you ought not to sell any of these files </b></p>
-                <a href={{ url_for('explain') }} class="button">More info.</a>
-            </section>
-        
-            <section class="inputLabels">
-                <h2>This page is currently managing a room of mine.</h2>
-                <div class="form" id="formAdd">
-                    <h3>Add a new element to the database:</h3>
-
-                    <form action="/execute-script" method="post">
-                        <label for "valor">GitHub token:</label>
-                        <input type="text" name="addtoken" id="addtoken"><br>
-                        <label for "valor">Element ID:</label>
-                        <input type="text" name="addID" id="addID"><br>
-                        <label for "valor">Amount stored:</label>
-                        <input type="text" name="addamount" id="addamount"><br>
-                        <label for "valor">Location:</label>
-                        <input type="text" name="addlocation" id="addlocation"><br>
-                        <label for "valor">Inside of:</label>
-                        <input type="text" name="addparent" id="addparent"><br>
-                        <label for "valor">Box or Item:</label>
-                        <input type="text" name="addwhichType" id="addwhichType"><br>
-                        <button class="button" type="button" id="executeButton">Upload element to database</button>
-                    </form>
-
-                    
-                    <div id="resultDivAdd" class="resultDivAdd"></div>
-                </div>
-
-                <div class="form" id="formDel">
-                    <h3>Delete an element from the database:</h3>
-
-                    <form action="/execute-script" method="post">
-                        <label for "valor">GitHub token:</label>
-                        <input type="text" name="deltoken" id="deltoken"><br>
-                        <label for "valor">Element ID:</label>
-                        <input type="text" name="delID" id="delID"><br>
-                        <label for "valor">Amount to delete:</label>
-                        <input type="text" name="delamount" id="delamount"><br>
-                        <label for "valor">Location:</label>
-                        <input type="text" name="dellocation" id="dellocation"><br>
-                        
-                        <button class="button" type="button" id="deleteButton">Delete element from database</button>
-                    </form>
-
-                    
-                    <div id="resultDivSub" class="resultDivSub"></div>
-                </div>
-
-                <div class="form" id="formUpd">
-                    <h3>Update an element from the database:</h3>
-
-                    <form action="/execute-script" method="post">
-                        <label for "valor">GitHub token:</label>
-                        <input type="text" name="updtoken" id="updtoken"><br>
-                        <label for "valor">Past ID:</label>
-                        <input type="text" name="pastID" id="pastID"><br>
-                        <label for "valor">Past amount:</label>
-                        <input type="text" name="pastAmount" id="pastAmount"><br>
-                        <label for "valor">Past location:</label>
-                        <input type="text" name="pastLocation" id="pastLocation"><br>
-                        <label for "valor">Past parent:</label>
-                        <input type="text" name="pastParent" id="pastParent"><br>
-                        <label for "valor">Past type (box or item):</label>
-                        <input type="text" name="pastWhichType" id="pastWhichType"><br>
-
-                        <label for "valor">New ID:</label>
-                        <input type="text" name="newID" id="newID"><br>
-                        <label for "valor">New amount:</label>
-                        <input type="text" name="newAmount" id="newAmount"><br>
-                        <label for "valor">New location:</label>
-                        <input type="text" name="newLocation" id="newLocation"><br>
-                        <label for "valor">New parent:</label>
-                        <input type="text" name="newParent" id="newParent"><br>
-                        <label for "valor">New type (box or item):</label>
-                        <input type="text" name="newWhichType" id="newWhichType"><br>
-                        
-                        <button class="button" type="button" id="updateButton">Update element from database</button>
-                    </form>
-                    
-
-                    <div id="resultDivUpd" class="resultDivUpd"></div>
-                </div>
-            </section>
+    <section class="homeSection">
+        <section class="inputHeaders">
+            <h2>Manage all your items with one app!</h2>
+            <p><b>Take your GitHub token and start managing.</b></p>
+            <p><b>You can copy whichever part of this project and implement it on your own room.</b></p>
+            <p><b>However, you ought not to sell any of these files </b></p>
+            <a href="{{ url_for('explain') }}" class="button">More info.</a>
         </section>
 
-        <footer>
-            <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
-        </footer>
-    </body>
+        <section class="inputLabels">
+            <!-- Add Item Form -->
+            <div class="form" id="formAdd">
+                <h3>Add a new element to the database:</h3>
+                <form>
+                    <label for="addtoken">GitHub token:</label>
+                    <input type="text" id="addtoken"><br>
+                    <label for="addID">Element ID:</label>
+                    <input type="text" id="addID"><br>
+                    <label for="addamount">Amount stored:</label>
+                    <input type="text" id="addamount"><br>
+                    <label for="addlocation">Location:</label>
+                    <input type="text" id="addlocation"><br>
+                    <label for="addparent">Inside of:</label>
+                    <input type="text" id="addparent"><br>
+                    <label for="addwhichType">Box or Item:</label>
+                    <input type="text" id="addwhichType"><br>
+                    <button class="button" type="button" id="executeButton">Upload element to database</button>
+                </form>
+                <div id="resultDivAdd"></div>
+            </div>
+
+            <!-- Delete Item Form -->
+            <div class="form" id="formDel">
+                <h3>Delete an element from the database:</h3>
+                <form>
+                    <label for="deltoken">GitHub token:</label>
+                    <input type="text" id="deltoken"><br>
+                    <label for="delID">Element ID:</label>
+                    <input type="text" id="delID"><br>
+                    <label for="delamount">Amount to delete:</label>
+                    <input type="text" id="delamount"><br>
+                    <label for="dellocation">Location:</label>
+                    <input type="text" id="dellocation"><br>
+                    <button class="button" type="button" id="deleteButton">Delete element from database</button>
+                </form>
+                <div id="resultDivSub"></div>
+            </div>
+
+            <!-- Update Item Form -->
+            <div class="form" id="formUpd">
+                <h3>Update an element from the database:</h3>
+                <form>
+                    <label for="updtoken">GitHub token:</label>
+                    <input type="text" id="updtoken"><br>
+                    <label for="pastID">Past ID:</label>
+                    <input type="text" id="pastID"><br>
+                    <label for="pastAmount">Past amount:</label>
+                    <input type="text" id="pastAmount"><br>
+                    <label for="pastLocation">Past location:</label>
+                    <input type="text" id="pastLocation"><br>
+                    <label for="pastParent">Past parent:</label>
+                    <input type="text" id="pastParent"><br>
+                    <label for="pastWhichType">Past type (box or item):</label>
+                    <input type="text" id="pastWhichType"><br>
+                    <label for="newID">New ID:</label>
+                    <input type="text" id="newID"><br>
+                    <label for="newAmount">New amount:</label>
+                    <input type="text" id="newAmount"><br>
+                    <label for="newLocation">New location:</label>
+                    <input type="text" id="newLocation"><br>
+                    <label for="newParent">New parent:</label>
+                    <input type="text" id="newParent"><br>
+                    <label for="newWhichType">New type (box or item):</label>
+                    <input type="text" id="newWhichType"><br>
+                    <button class="button" type="button" id="updateButton">Update element from database</button>
+                </form>
+                <div id="resultDivUpd"></div>
+            </div>
+        </section>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Your Inventory Management App, all rights reserved.</p>
+    </footer>
+</body>
 </html>

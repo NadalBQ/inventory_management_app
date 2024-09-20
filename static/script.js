@@ -42,7 +42,7 @@ function sendRequest(url, body, resultDiv) {
 function addElement() {
     const token = document.getElementById('addtoken').value;
     const ID = document.getElementById('addID').value;
-    
+
     // Form validation for required fields
     if (!token || !ID) {
         alert('GitHub token and Element ID are required.');
@@ -108,5 +108,5 @@ function updElement() {
         newType: document.getElementById('newWhichType').value || "Item"
     };
 
-    sendRequest('/update_item', body, 'resultDivUpd'); // Updated endpoint for updating elements
+    sendRequest('/update_item', body, 'resultDivUpd');
 }
