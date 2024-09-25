@@ -4,49 +4,46 @@ from github import Github
 import base64
 import io
 
-
 repository_name = "nadalbq/inventory_management_app"
 csv_file_path = "./static/csvs/inventory.csv"
 app = Flask(__name__, static_url_path='/static')
+
 # Web addresses
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route('/home')
 def home():
     return render_template('home.html')
+
 @app.route('/explain')
 def explain():
     return render_template('explain.html')
+
 @app.route('/aboutus')
 def aboutus():
     return render_template('aboutus.html')
+
 @app.route('/theProject')
 def theProject():
     return render_template('theProject.html')
-
 
 @app.route('/nadal')
 def nadal():
     return render_template('nadal.html')
 
-
-
+# Utility function to update the CSV file in the GitHub repository
 def updateDataframe(repository, df, csv):
     new_csv_content = df.to_csv(index=False)
     repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
 
+# Add Item
 @app.route('/add_item', methods=['POST'])
-
 def add_item(edit: bool=False, adddata=None):
     if not edit:
         adddata = request.json
-    
 
-    # df = pd.read_csv('./static/csvs/inventory.csv', index_col=False)
-    print(adddata, edit)
     token = str(adddata['token'])
     ID = str(adddata['ID'])
     Location = str(adddata['location'])
@@ -54,7 +51,7 @@ def add_item(edit: bool=False, adddata=None):
     Parent = str(adddata['parent'])
     Type = str(adddata['Type']).lower().capitalize()
 
-    print("add item: " + token, ID, Location, Amount, Parent, Type)
+    print(f"Adding item: Token={token}, ID={ID}, Location={Location}, Amount={Amount}, Parent={Parent}, Type={Type}")
 
     g = Github(token)
     repository = g.get_repo(repository_name)
@@ -63,95 +60,78 @@ def add_item(edit: bool=False, adddata=None):
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
 
-    
-    # If given element already exists in the database, only add amount to the stored amount
+    # Check if the item already exists
     try:
-        if df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"].iloc[0] != None:
-            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type),"Amount"].iloc[0]) + int(Amount)
-            print("\nThe element was already part of the database so amounts were added together\n")
-    
-    # If given element does not already exist in the database, append a new line to it.
-    except Exception as e:
-        print("User tried adding new element to the database")
-        data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location], 'Parent': [Parent], 'Type': [Type]}
-        new_row = pd.DataFrame(data, index=[len(df)])
+        existing_amount = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type), "Amount"].iloc[0]
+        df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type), "Amount"] = int(existing_amount) + int(Amount)
+        print("\nItem already exists, amounts were added together\n")
+    except:
+        # Add new item
+        new_row = pd.DataFrame({
+            'ID': [ID],
+            'Amount': [Amount],
+            'Location': [Location],
+            'Parent': [Parent],
+            'Type': [Type]
+        })
         df = pd.concat([df, new_row])
-
-        # df.to_csv('./static/csvs/inventory.csv', index=False)
+        print("Added a new item to the database")
 
     updateDataframe(repository, df, csv)
+    
     if not edit:
         return jsonify({'result': "Element added effectively"})
     return None
 
-
-
-
-
+# Delete Item
 @app.route('/del_item', methods=['POST'])
-
 def del_item(edit: bool=False, deldata=None):
-    print("delitem1")
-    if not edit:
-        deldata = request.json
-    print("delitem2")
-    print("DATA_____________________________", deldata)
-    token = str(deldata['token'])
-    ID = str(deldata['ID'])
-    Location = str(deldata['location'])
-    Amount = str(deldata['amount'])
-    print("delete item: " + token, ID, Location, Amount)
+    try:
+        if not edit:
+            deldata = request.json
+        
+        token = str(deldata['token'])
+        ID = str(deldata['ID'])
+        Location = str(deldata['location'])
+        Amount = str(deldata['amount'])
+        
+        print(f"Deleting item: Token={token}, ID={ID}, Location={Location}, Amount={Amount}")
 
-    g = Github(token)
-    repository = g.get_repo(repository_name)
-    csv = repository.get_contents(csv_file_path)
-    decoded_csv = base64.b64decode(csv.content).decode('utf-8')
-    csv_io = io.StringIO(decoded_csv)
-    df = pd.read_csv(csv_io)
+        g = Github(token)
+        repository = g.get_repo(repository_name)
+        csv = repository.get_contents(csv_file_path)
+        decoded_csv = base64.b64decode(csv.content).decode('utf-8')
+        csv_io = io.StringIO(decoded_csv)
+        df = pd.read_csv(csv_io)
 
-    # data = {'ID': [ID], 'Amount': [Amount], 'Location': [Location]}
+        # Check if the exact ID, location, and amount exist to delete
+        if int(Amount) == int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location), "Amount"].iloc[0]):
+            df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
+            print(f"Deleted item with ID={ID} and Location={Location}.")
+        else:
+            # Reduce the amount if it doesn't exactly match
+            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location), "Amount"] -= int(Amount)
+            print(f"Reduced amount of item with ID={ID} and Location={Location} by {Amount}.")
 
-    # If User does not provide an ID:
-    if not ID:
-        print("Tried to delete element without ID reference")
-        return jsonify({'result': "No ID was received, could not delete element."})
+        # Update the CSV file in the repository
+        updateDataframe(repository, df, csv)
+        
+        if not edit:
+            return jsonify({'result': "Element deleted/updated effectively"})
+
+        return "Deletion successful"
     
-    # If User provides ID, Location and the exact Amount there is of that element:
-    elif int(Amount) == int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"].iloc[0]):
-            try:
-                df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
-                print(f"Deleted every element with ID={ID} and Location={Location}")
-                updateDataframe(repository, df, csv)
-                if not edit:
-                    return jsonify({'result': "Element deleted effectively."})
-                return None
-            except:
-                print(Exception)
-                return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
-  
-    
-    #If User provides ID, Location and Amount of element:
-    else:
-        try:
-            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"] = int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location),"Amount"].iloc[0]) - int(Amount)
-            print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
-            updateDataframe(repository, df, csv)
-            if not edit:
-                return jsonify({'result': "Element amount updated effectively."})
-            return None
-        except:
-            print(Exception)
-            return jsonify({'result': "The specified ID or Location was not found in the database\nException: {Exception.__name__}"})
-        
-        
-        
-    # df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location) & df['Amount'].eq(Amount))]
+    except Exception as e:
+        print(f"Error occurred in del_item: {e}")
+        if not edit:
+            return jsonify({'error': f"Failed to delete item: {e}"}), 400
 
+        return None
 
+# Edit Item
 @app.route('/edit_item', methods=['POST'])
-
 def edit_item(data=None):
-    if data == None:
+    if data is None:
         data = request.json
 
     token = str(data['token'])
@@ -166,24 +146,37 @@ def edit_item(data=None):
     pastType = str(data['pastType']).lower().capitalize()
     newType = str(data['newType']).lower().capitalize()
 
-    deldata = {'token': [token], 'ID': [pastID], 'amount': [pastAmount], 'location': [pastLocation]}
-    adddata = {'token': [token], 'ID': [newID], 'amount': [newAmount], 'location': [newLocation], 'parent': [newParent], 'Type': [newType]}
-    print(deldata, adddata, data)
-    print("_" * 50)
-    print("*"*50)
-    # Update all values to the new attributes
-    #a = del_item(True, deldata)
-    a =3
-    print("\nafter delitem (only doing add)\n\n")
-    if a != None:
-        add_item(True, adddata)
-    else: return "An exception occured while deleting past element"
-    
-    # Save the csv to github and close the function (both del_item and add_item update that)
-    
-    # Post the action status on the web.
-    return "Atribute/s updated effectively"
+    # Data structure for del_item and add_item
+    deldata = {
+        'token': token,
+        'ID': pastID,
+        'amount': pastAmount,
+        'location': pastLocation
+    }
+    adddata = {
+        'token': token,
+        'ID': newID,
+        'amount': newAmount,
+        'location': newLocation,
+        'parent': newParent,
+        'Type': newType
+    }
 
+    # First, attempt to delete the past item
+    delete_result = del_item(edit=True, deldata=deldata)
+    
+    if delete_result == "Deletion successful":
+        print("Deletion successful, now adding the new item.")
+        
+        # Add the new item after successful deletion
+        add_item(edit=True, adddata=adddata)
+        
+        return jsonify({'result': "Item updated successfully."})
+    
+    else:
+        print("Deletion failed. Skipping the addition of the new item.")
+        return jsonify({'error': "Failed to delete the old item."}), 400
 
-# debugging:
-# edit_item({ 'token': 'No token for you', 'pastID': 'jaja', 'newID': 'jaja', 'pastLocation': '1', 'newLocation': '0', 'pastAmount': '80', 'newAmount': '5', 'pastParent': 'caja1', 'newParent': 'Trastero', 'pastType': 'Item', 'newType': 'Item' })
+# Start the Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
