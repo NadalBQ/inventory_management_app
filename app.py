@@ -129,8 +129,8 @@ def del_item(edit: bool=False, deldata=None):
         return None
 
 # Edit Item
-@app.route('/edit_item', methods=['POST'])
-def edit_item(data=None):
+@app.route('/update_item', methods=['POST'])
+def update_item(data=None):
     if data is None:
         data = request.json
 
