@@ -86,47 +86,55 @@ def add_item(edit: bool=False, adddata=None):
 # Delete Item
 @app.route('/del_item', methods=['POST'])
 def del_item(edit: bool=False, deldata=None):
-    try:
-        if not edit:
-            deldata = request.json
-        
-        token = str(deldata['token'])
-        ID = str(deldata['ID'])
-        Location = str(deldata['location'])
-        Amount = str(deldata['amount'])
-        
-        print(f"Deleting item: Token={token}, ID={ID}, Location={Location}, Amount={Amount}")
+    if not edit:
+        deldata = request.json
 
-        g = Github(token)
-        repository = g.get_repo(repository_name)
-        csv = repository.get_contents(csv_file_path)
-        decoded_csv = base64.b64decode(csv.content).decode('utf-8')
-        csv_io = io.StringIO(decoded_csv)
-        df = pd.read_csv(csv_io)
+    token = str(deldata['token'])
+    ID = str(deldata['ID'])
+    Location = str(deldata['location'])
+    Amount = str(deldata['amount'])
 
-        # Check if the exact ID, location, and amount exist to delete
-        if int(Amount) == int(df.loc[df['ID'].eq(ID) & df['Location'].eq(Location), "Amount"].iloc[0]):
-            df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
-            print(f"Deleted item with ID={ID} and Location={Location}.")
-        else:
-            # Reduce the amount if it doesn't exactly match
-            df.loc[df['ID'].eq(ID) & df['Location'].eq(Location), "Amount"] -= int(Amount)
-            print(f"Reduced amount of item with ID={ID} and Location={Location} by {Amount}.")
+    print("delete item: " + token, ID, Location, Amount)
 
-        # Update the CSV file in the repository
+    g = Github(token)
+    repository = g.get_repo(repository_name)
+    csv = repository.get_contents(csv_file_path)
+    decoded_csv = base64.b64decode(csv.content).decode('utf-8')
+    csv_io = io.StringIO(decoded_csv)
+    df = pd.read_csv(csv_io)
+
+    # If User does not provide an ID:
+    if not ID:
+        print("Tried to delete element without ID reference")
+        return jsonify({'result': "No ID was received, could not delete element."})
+
+    # Filter the DataFrame to get matching rows
+    matching_rows = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location)]
+
+    # Check if there are any matching rows before proceeding
+    if matching_rows.empty:
+        return jsonify({'result': f"No elements with ID={ID} and Location={Location} found in the database."})
+
+    # If User provides ID, Location and the exact Amount there is of that element:
+    elif int(Amount) == int(matching_rows["Amount"].iloc[0]):
+        df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
+        print(f"Deleted every element with ID={ID} and Location={Location}")
         updateDataframe(repository, df, csv)
-        
         if not edit:
-            return jsonify({'result': "Element deleted/updated effectively"})
-
-        return "Deletion successful"
-    
-    except Exception as e:
-        print(f"Error occurred in del_item: {e}")
-        if not edit:
-            return jsonify({'error': f"Failed to delete item: {e}"}), 400
-
+            return jsonify({'result': "Element deleted effectively."})
         return None
+
+    # If User provides ID, Location and a different Amount of element:
+    else:
+        df.loc[df['ID'].eq(ID) & df['Location'].eq(Location), "Amount"] = (
+            int(matching_rows["Amount"].iloc[0]) - int(Amount)
+        )
+        print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
+        updateDataframe(repository, df, csv)
+        if not edit:
+            return jsonify({'result': "Element amount updated effectively."})
+        return None
+
 
 # Edit Item
 @app.route('/update_item', methods=['POST'])
