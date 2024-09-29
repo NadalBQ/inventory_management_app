@@ -173,7 +173,7 @@ def update_item(data=None):
     # First, attempt to delete the past item
     delete_result = del_item(edit=True, deldata=deldata)
     
-    if delete_result == "Deletion successful":
+    if delete_result == None:
         print("Deletion successful, now adding the new item.")
         
         # Add the new item after successful deletion
