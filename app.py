@@ -102,7 +102,7 @@ def del_item(edit: bool=False, deldata=None):
     decoded_csv = base64.b64decode(csv.content).decode('utf-8')
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
-
+    print("dataframe taken from github sucessfully " + "_"*30)
     # If User does not provide an ID:
     if not ID:
         print("Tried to delete element without ID reference")
@@ -110,7 +110,7 @@ def del_item(edit: bool=False, deldata=None):
 
     # Filter the DataFrame to get matching rows
     matching_rows = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location)]
-
+    print(matching_rows, "Matching rows " + "_"*30)
     # Check if there are any matching rows before proceeding
     if matching_rows.empty:
         return jsonify({'result': f"No elements with ID={ID} and Location={Location} found in the database."})
@@ -173,7 +173,7 @@ def update_item(data=None):
     # First, attempt to delete the past item
     delete_result = del_item(edit=True, deldata=deldata)
     
-    if delete_result == None:
+    if delete_result == "Deletion successful":
         print("Deletion successful, now adding the new item.")
         
         # Add the new item after successful deletion
