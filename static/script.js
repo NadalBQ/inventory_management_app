@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function sendRequest(url, body, resultDiv) {
     document.getElementById(resultDiv).innerText = 'Processing...'; // Show a loading message
     fetch(url, {
+        signal: AbortSignal.timeout(5000),
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
