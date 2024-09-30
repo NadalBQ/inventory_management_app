@@ -123,7 +123,7 @@ def del_item(edit: bool=False, deldata=None):
         updateDataframe(repository, df, csv)
         if not edit:
             return jsonify({'result': "Element deleted successfully."})
-        return None
+        return "Done"
 
     # If User provides ID, Location and a different Amount of element:
     else:
@@ -134,7 +134,7 @@ def del_item(edit: bool=False, deldata=None):
         updateDataframe(repository, df, csv)
         if not edit:
             return jsonify({'result': "Element amount updated successfully."})
-        return None
+        return "Done"
 
 
 # Edit Item
@@ -174,7 +174,7 @@ def update_item(data=None):
     # First, attempt to delete the past item
     delete_result = del_item(edit=True, deldata=deldata)
     
-    if delete_result == "Deletion successful":
+    if delete_result == "Done":
         print("Deletion successful, now adding the new item.")
         
         # Add the new item after successful deletion
