@@ -80,7 +80,7 @@ def add_item(edit: bool=False, adddata=None):
     updateDataframe(repository, df, csv)
     
     if not edit:
-        return jsonify({'result': "Element added effectively"})
+        return jsonify({'result': "Element added successfully"})
     return None
 
 # Delete Item
@@ -102,7 +102,8 @@ def del_item(edit: bool=False, deldata=None):
     decoded_csv = base64.b64decode(csv.content).decode('utf-8')
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
-    print("dataframe taken from github sucessfully " + "_"*30)
+    print(df)
+    print("dataframe taken from github successfully " + "_"*30)
     # If User does not provide an ID:
     if not ID:
         print("Tried to delete element without ID reference")
@@ -121,7 +122,7 @@ def del_item(edit: bool=False, deldata=None):
         print(f"Deleted every element with ID={ID} and Location={Location}")
         updateDataframe(repository, df, csv)
         if not edit:
-            return jsonify({'result': "Element deleted effectively."})
+            return jsonify({'result': "Element deleted successfully."})
         return None
 
     # If User provides ID, Location and a different Amount of element:
@@ -132,7 +133,7 @@ def del_item(edit: bool=False, deldata=None):
         print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
         updateDataframe(repository, df, csv)
         if not edit:
-            return jsonify({'result': "Element amount updated effectively."})
+            return jsonify({'result': "Element amount updated successfully."})
         return None
 
 
