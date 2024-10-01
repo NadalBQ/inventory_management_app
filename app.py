@@ -4,9 +4,58 @@ from github import Github
 import base64
 import io
 
+"""***LOGGER***"""
+import logging
+from bisect import bisect
+from logging import getLogger, Formatter, LogRecord, StreamHandler
+from typing import Dict
+
+
+class LevelFormatter(Formatter):
+    def __init__(self, formats: Dict[int, str], **kwargs):
+        super().__init__()
+
+        if 'fmt' in kwargs:
+            raise ValueError(
+                'Format string must be passed to level-surrogate formatters, '
+                'not this one'
+            )
+
+        self.formats = sorted(
+            (level, Formatter(fmt, **kwargs)) for level, fmt in formats.items()
+        )
+
+    def format(self, record: LogRecord) -> str:
+        idx = bisect(self.formats, (record.levelno,), hi=len(self.formats)-1)
+        level, formatter = self.formats[idx]
+        return formatter.format(record)
+    
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+if not logger.hasHandlers():
+    handler = StreamHandler()
+    formatter = LevelFormatter(
+        {
+            logging.DEBUG: '\033[94m[%(asctime)s - %(lineno)d] DEBUG\033[0m: %(message)s',
+            logging.INFO: '\033[94mINFO\033[0m: %(message)s',
+            logging.WARNING: '\033[93mWARNING\033[0m: %(message)s',
+            logging.ERROR: '\033[91mERROR\033[0m: %(message)s',
+            logging.CRITICAL: '\033[91mCRITICAL\033[0m: %(message)s'
+        }
+    )
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+logger.info("Logger set up successfully")
+
+
+
 repository_name = "nadalbq/inventory_management_app"
 csv_file_path = "./static/csvs/inventory.csv"
 app = Flask(__name__, static_url_path='/static')
+logger.info("Flask app set up correctly")
 
 # Web addresses
 @app.route('/')
@@ -34,9 +83,11 @@ def nadal():
     return render_template('nadal.html')
 
 # Utility function to update the CSV file in the GitHub repository
-def updateDataframe(repository, df, csv):
+def updateDataframe(repository, df, csv, commit="Updating CSV content"):
+    
     new_csv_content = df.to_csv(index=False)
-    repository.update_file(csv_file_path, "Updating CSV content", new_csv_content, csv.sha)
+    repository.update_file(csv_file_path, commit, new_csv_content, csv.sha)
+    logger.debug("updateDataframe function saved the dataframe with commit= \"" + commit + "\"")
 
 # Add Item
 @app.route('/add_item', methods=['POST'])
@@ -51,7 +102,7 @@ def add_item(edit: bool=False, adddata=None):
     Parent = str(adddata['parent'])
     Type = str(adddata['Type']).lower().capitalize()
 
-    print(f"Adding item: Token={token}, ID={ID}, Location={Location}, Amount={Amount}, Parent={Parent}, Type={Type}")
+    logger.info(f"Adding item: Token={token}, ID={ID}, Location={Location}, Amount={Amount}, Parent={Parent}, Type={Type}")
 
     g = Github(token)
     repository = g.get_repo(repository_name)
@@ -64,7 +115,7 @@ def add_item(edit: bool=False, adddata=None):
     try:
         existing_amount = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type), "Amount"].iloc[0]
         df.loc[df['ID'].eq(ID) & df['Location'].eq(Location) & df['Parent'].eq(Parent) & df['Type'].eq(Type), "Amount"] = int(existing_amount) + int(Amount)
-        print("\nItem already exists, amounts were added together\n")
+        logger.info("\nItem already exists, amounts were added together\n")
     except:
         # Add new item
         new_row = pd.DataFrame({
@@ -75,7 +126,7 @@ def add_item(edit: bool=False, adddata=None):
             'Type': [Type]
         })
         df = pd.concat([df, new_row])
-        print("Added a new item to the database")
+        logger.info("Added a new item to the database")
 
     updateDataframe(repository, df, csv)
     
@@ -94,7 +145,7 @@ def del_item(edit: bool=False, deldata=None):
     Location = str(deldata['location'])
     Amount = str(deldata['amount'])
 
-    print("delete item: " + token, ID, Location, Amount)
+    logger.info("delete item: " + token, ID, Location, Amount)
 
     g = Github(token)
     repository = g.get_repo(repository_name)
@@ -102,16 +153,16 @@ def del_item(edit: bool=False, deldata=None):
     decoded_csv = base64.b64decode(csv.content).decode('utf-8')
     csv_io = io.StringIO(decoded_csv)
     df = pd.read_csv(csv_io)
-    print(df)
-    print("dataframe taken from github successfully " + "_"*30)
+    logger.debug(df)
+    logger.debug("dataframe taken from github successfully " + "_"*30)
     # If User does not provide an ID:
     if not ID:
-        print("Tried to delete element without ID reference")
+        logger.info("Tried to delete element without ID reference")
         return jsonify({'result': "No ID was received, could not delete element."})
 
     # Filter the DataFrame to get matching rows
     matching_rows = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location)]
-    print(matching_rows, "Matching rows " + "_"*30)
+    logger.debug(matching_rows, "Matching rows " + "_"*30)
     # Check if there are any matching rows before proceeding
     if matching_rows.empty:
         return jsonify({'result': f"No elements with ID={ID} and Location={Location} found in the database."})
@@ -119,7 +170,7 @@ def del_item(edit: bool=False, deldata=None):
     # If User provides ID, Location and the exact Amount there is of that element:
     elif int(Amount) == int(matching_rows["Amount"].iloc[0]):
         df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
-        print(f"Deleted every element with ID={ID} and Location={Location}")
+        logger.info(f"Deleted every element with ID={ID} and Location={Location}")
         updateDataframe(repository, df, csv)
         if not edit:
             return jsonify({'result': "Element deleted successfully."})
@@ -130,7 +181,7 @@ def del_item(edit: bool=False, deldata=None):
         df.loc[df['ID'].eq(ID) & df['Location'].eq(Location), "Amount"] = (
             int(matching_rows["Amount"].iloc[0]) - int(Amount)
         )
-        print(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
+        logger.info(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
         updateDataframe(repository, df, csv)
         if not edit:
             return jsonify({'result': "Element amount updated successfully."})
@@ -175,7 +226,7 @@ def update_item(data=None):
     delete_result = del_item(edit=True, deldata=deldata)
     
     if delete_result == "Done":
-        print("Deletion successful, now adding the new item.")
+        logger.info("Deletion successful, now adding the new item.")
         
         # Add the new item after successful deletion
         add_item(edit=True, adddata=adddata)
@@ -183,7 +234,7 @@ def update_item(data=None):
         return jsonify({'result': "Item updated successfully."})
     
     else:
-        print("Deletion failed. Skipping the addition of the new item.")
+        logger.info("Deletion failed. Skipping the addition of the new item.")
         return jsonify({'error': "Failed to delete the old item."}), 400
 
 # Start the Flask app
