@@ -1,0 +1,37 @@
+<!--Finder html-->
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/style.css">
+        <title>Finder</title>
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+        <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script>
+    </head>
+    
+    <body>
+        <header>
+            <h1>Your inventory management app</h1>
+            <nav>
+                <ul>
+                    <li><a href={{ url_for('home') }}>Home</a></li>
+                    <li><a href={{ url_for('aboutus') }}>About</a></li>
+                    <li><a href={{ url_for('theProject') }}>The Project</a></li>
+                    <li><a href={{ url_for('theProject') }}><b>Finder</b></a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="finderSection">
+            <section class="finderHeader">
+                <h2>Easily find any element stored in the database!</h2>
+                <p><b>You can consult the availability of any item and whichever attribute you might not know about it.</b></p>
+                <p><b>Filter by each attribute to help your search and narrow the amount of elements displayed.</b></p>
+                <p><b>This information is public in the <a href="https://github.com/NadalBQ/inventory_management_app">github repository</a> from which this page is being deployed.</b></p>
+                <a href="{{ url_for('finderTutorial') }}" class="button">Finder guide.</a>
+            </section>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
+        </footer>
+    </body>
+</html>
