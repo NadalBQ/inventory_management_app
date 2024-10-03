@@ -15,9 +15,10 @@
         <h1>Your inventory management app</h1>
         <nav>
             <ul>
-                <li><a href={{ url_for('home') }}>Home</a></li>
-                <li><a href={{ url_for('aboutus') }}><b>About</b></a></li>
-                <li><a href={{ url_for('theProject') }}>The Project</a></li>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('aboutus') }}"><b>About</b></a></li>
+                <li><a href="{{ url_for('theProject') }}">The Project</a></li>
+                <li><a href="{{ url_for('finder') }}">Finder</a></li>
             </ul>
         </nav>
     </header>
