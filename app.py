@@ -66,6 +66,10 @@ def index():
 def home():
     return render_template('home.html')
 
+@app.route('/finder')
+def home():
+    return render_template('finder.html')
+
 @app.route('/explain')
 def explain():
     return render_template('explain.html')
