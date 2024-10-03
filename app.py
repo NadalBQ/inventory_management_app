@@ -67,7 +67,7 @@ def home():
     return render_template('home.html')
 
 @app.route('/finder')
-def home():
+def finder():
     return render_template('finder.html')
 
 @app.route('/explain')
