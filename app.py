@@ -70,6 +70,10 @@ def home():
 def finder():
     return render_template('finder.html')
 
+@app.route('/finder/tutorial')
+def tutorial():
+    return render_template('finderTutorial.html')
+
 @app.route('/explain')
 def explain():
     return render_template('explain.html')
