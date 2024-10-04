@@ -66,11 +66,11 @@ def index():
 def home():
     return render_template('home.html')
 
-@app.route('/finder')
-def finder():
-    return render_template('finder.html')
+@app.route('/elfinder')
+def elfinder():
+    return render_template('elfinder.html')
 
-@app.route('/finder/tutorial')
+@app.route('/elfinder/tutorial')
 def tutorial():
     return render_template('finderTutorial.html')
 
