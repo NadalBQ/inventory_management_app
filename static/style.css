@@ -218,9 +218,6 @@ nav ul li a {
 }
 
 .homeSection {
-    /*padding: 20px;*/
-    /*margin-top: 20px;*/
-    /*margin-bottom: 20px;*/
     flex: 1;
     background-image: url("/static/images/fondoupv.jpg");
     background-position: center +54%;
@@ -422,35 +419,7 @@ footer {
     background-color: #e3ffd8a9;
 }
 
-.isabellesection {
-    /*margin-top: 20px;*/
-    padding: 20px;
-    opacity: 70%;
-    background-color: #e3ffd8a9;
-}
-
 .nadalsection {
-    /*margin-top: 20px;*/
-    padding: 20px;
-    opacity: 70%;
-    background-color: #e3ffd8a9;
-}
-
-.fernandasection {
-    /*margin-top: 20px;*/
-    padding: 20px;
-    opacity: 70%;
-    background-color: #e3ffd8a9;
-}
-
-.carlasection {
-    /*margin-top: 20px;*/
-    padding: 20px;
-    opacity: 70%;
-    background-color: #e3ffd8a9;
-}
-
-.michelesection {
     /*margin-top: 20px;*/
     padding: 20px;
     opacity: 70%;
@@ -459,4 +428,24 @@ footer {
 
 .form {
     padding: 20px;
+}
+
+.finderSection {
+    flex: 1;
+    background-image: url("/static/images/fondoupv.jpg");
+    background-position: center +54%;
+    background-repeat: no-repeat;
+}
+
+
+.finderHeaders {
+    opacity: 70%;
+    background-color: #f4f4f4a9;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.inputHeaders h2 {
+    margin-bottom: 10px;
 }
