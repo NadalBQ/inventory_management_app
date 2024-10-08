@@ -449,3 +449,93 @@ footer {
 .inputHeaders h2 {
     margin-bottom: 10px;
 }
+
+
+.table-container {
+    width: 90%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Scalable Table Styling */
+.scalable-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed; /* Ensures uniform column width */
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.scalable-table thead {
+    background-color: #009879;
+    color: white;
+}
+
+.scalable-table th, .scalable-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.scalable-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.scalable-table tbody tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+/* Styling for scrollable container */
+.table-container {
+    overflow-y: auto;
+    height: 400px; /* Height for scrollability */
+}
+
+.scalable-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .scalable-table thead {
+        display: none; /* Hide the header on small screens */
+    }
+
+    .scalable-table, .scalable-table tbody, .scalable-table tr, .scalable-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .scalable-table tbody tr {
+        margin-bottom: 15px;
+    }
+
+    .scalable-table tbody tr td {
+        padding: 10px;
+        text-align: right;
+        position: relative;
+    }
+
+    .scalable-table tbody tr td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 50%;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .scalable-table tbody tr td[data-label='Transaction ID'] {
+        background-color: #009879;
+        color: #fff;
+    }
+}
