@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    loadTableData();
     document.getElementById('executeButton').addEventListener('click', addElement);
     document.getElementById('deleteButton').addEventListener('click', delElement);
     document.getElementById('updateButton').addEventListener('click', updElement);
@@ -112,38 +113,38 @@ function updElement() {
     sendRequest('/update_item', body, 'resultDivUpd');
 }
 
-async function loadCSV() {
+async function loadTableData() {
     try {
-        const response = await fetch('./csvs/inventory.csv');
+        // Assuming you have a CSV file in the same directory, replace with your source file if different
+        const response = await fetch('../static/csvs/inventory.csv');
         const csvText = await response.text();
 
-        const rows = csvText.split('\n').slice(1); // Remove the header row
+        // Parse CSV text into an array of rows
+        const rows = csvText.split('\n').slice(1); // Skip the header row
+
+        // Reference to table body element
         const tableBody = document.getElementById('table-body');
 
-        // Iterate over each row in the CSV and use helper function
+        // Clear existing rows (if any) except for the example row
+        tableBody.innerHTML = '';
+
         rows.forEach(row => {
+            // Split the row by commas to get each column value
             const columns = row.split(',');
-            if (columns.length === 5) {
-                addTransaction(tableBody, columns);
+
+            if (columns.length >= 5) { // Ensure there are enough columns in the row
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${columns[0]}</td>
+                    <td>${columns[1]}</td>
+                    <td>${columns[2]}</td>
+                    <td>${columns[3]}</td>
+                    <td>${columns[4]}</td>
+                `;
+                tableBody.appendChild(newRow);
             }
         });
     } catch (error) {
-        console.error('Error loading CSV:', error);
+        console.error("Error loading CSV data: ", error);
     }
 }
-
-// Helper function to add a transaction row to the table
-function addTransaction(tableBody, columns) {
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-        <td>${columns[0]}</td>
-        <td>${columns[1]}</td>
-        <td>${columns[2]}</td>
-        <td>${columns[3]}</td>
-        <td>${columns[4]}</td>
-    `;
-    tableBody.appendChild(newRow);
-}
-
-// Load CSV once the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', loadCSV);
