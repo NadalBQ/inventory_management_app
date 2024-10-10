@@ -123,7 +123,7 @@ async function loadCSV() {
         // Iterate over each row in the CSV and use helper function
         rows.forEach(row => {
             const columns = row.split(',');
-            if (columns.length === 6) {
+            if (columns.length === 5) {
                 addTransaction(tableBody, columns);
             }
         });
