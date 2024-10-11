@@ -490,7 +490,7 @@ h1 {
 }
 
 .scalable-table tbody tr:nth-child(even) {
-    background-color: #f3f3f3;
+    background-color: #9b9b9b;
 }
 
 .scalable-table tbody tr:nth-child(odd) {
