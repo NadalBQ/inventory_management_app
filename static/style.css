@@ -440,7 +440,7 @@ footer {
 
 .finderHeaders {
     opacity: 70%;
-    background-color: #f4f4f4a9;
+    background-color: #f4f4f4d6;
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
@@ -491,6 +491,10 @@ h1 {
 
 .scalable-table tbody tr:nth-child(even) {
     background-color: #f3f3f3;
+}
+
+.scalable-table tbody tr:nth-child(odd) {
+    background-color: #bebebe;
 }
 
 /* Styling for scrollable container */
