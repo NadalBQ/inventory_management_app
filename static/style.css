@@ -450,13 +450,18 @@ footer {
     margin-bottom: 10px;
 }
 
-
+/* Container for the table, allowing for scrollability */
 .table-container {
     width: 90%;
     margin: 40px auto;
     text-align: center;
+    overflow-y: auto; /* Allows vertical scrolling */
+    max-height: 400px; /* Set max height to control scrolling */
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Title styling */
 h1 {
     margin-bottom: 20px;
     color: #333;
@@ -469,12 +474,16 @@ h1 {
     margin-bottom: 20px;
     table-layout: fixed; /* Ensures uniform column width */
     font-size: 16px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Sticky Header Styling */
 .scalable-table thead {
-    background-color: #009879;
-    color: white;
+    position: sticky; /* Sticky positioning for the header */
+    top: 0; /* Keep the header at the top of the container */
+    background-color: #009879; /* Green background color */
+    color: white; /* White text */
+    z-index: 2; /* Ensure the header stays on top */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for visual separation */
 }
 
 .scalable-table th, .scalable-table td {
@@ -483,12 +492,7 @@ h1 {
     text-align: left;
 }
 
-.scalable-table th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
+/* Zebra Striping */
 .scalable-table tbody tr:nth-child(even) {
     background-color: #9b9b9b;
 }
@@ -497,17 +501,12 @@ h1 {
     background-color: #bebebe;
 }
 
-/* Styling for scrollable container */
-.table-container {
-    overflow-y: auto;
-    height: 400px; /* Height for scrollability */
-}
-
+/* Hover effect */
 .scalable-table tbody tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Responsive Design */
+/* Responsive Design for smaller screens */
 @media (max-width: 768px) {
     .scalable-table thead {
         display: none; /* Hide the header on small screens */
