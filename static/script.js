@@ -148,3 +148,87 @@ async function loadTableData() {
         console.error("Error loading CSV data: ", error);
     }
 }
+
+// TABLE IN FINDER.HTML
+
+// Function to sort table by the selected column (A-Z or Z-A)
+function sortTable(columnIndex, order) {
+    const table = document.getElementById("table-body");
+    let rows = Array.from(table.rows);
+    
+    rows.sort((a, b) => {
+        let aText = a.cells[columnIndex].innerText.toLowerCase();
+        let bText = b.cells[columnIndex].innerText.toLowerCase();
+        if (order === 'asc') {
+            return aText.localeCompare(bText);
+        } else {
+            return bText.localeCompare(aText);
+        }
+    });
+
+    // Re-append sorted rows
+    rows.forEach(row => table.appendChild(row));
+}
+
+// Function to filter the table based on dropdown values
+function filterTable(columnIndex) {
+    const table = document.getElementById("table-body");
+    const rows = table.rows;
+    const filters = [
+        document.getElementById("amountFilter").value,
+        document.getElementById("locationFilter").value,
+        document.getElementById("parentFilter").value,
+        document.getElementById("typeFilter").value
+    ];
+
+    // Loop through each row and hide/show based on the filter
+    for (let i = 0; i < rows.length; i++) {
+        let showRow = true;
+        for (let j = 0; j < filters.length; j++) {
+            if (filters[j] && rows[i].cells[j + 1].innerText !== filters[j]) {
+                showRow = false;
+                break;
+            }
+        }
+        rows[i].style.display = showRow ? "" : "none";
+    }
+}
+
+// Populate the filters dynamically based on unique values in each column
+function populateFilters() {
+    const table = document.getElementById("table-body");
+    const rows = table.rows;
+
+    // Collect unique values for each column
+    const amountSet = new Set();
+    const locationSet = new Set();
+    const parentSet = new Set();
+    const typeSet = new Set();
+
+    for (let i = 0; i < rows.length; i++) {
+        amountSet.add(rows[i].cells[1].innerText);
+        locationSet.add(rows[i].cells[2].innerText);
+        parentSet.add(rows[i].cells[3].innerText);
+        typeSet.add(rows[i].cells[4].innerText);
+    }
+
+    // Populate filter dropdowns with unique values
+    addOptionsToFilter("amountFilter", amountSet);
+    addOptionsToFilter("locationFilter", locationSet);
+    addOptionsToFilter("parentFilter", parentSet);
+    addOptionsToFilter("typeFilter", typeSet);
+}
+
+// Utility function to add options to a dropdown filter
+function addOptionsToFilter(filterId, valueSet) {
+    const filter = document.getElementById(filterId);
+    valueSet.forEach(value => {
+        let option = document.createElement("option");
+        option.value = value;
+        option.innerText = value;
+        filter.appendChild(option);
+    });
+}
+
+// Run populateFilters on page load to fill the dropdowns with values
+window.onload = populateFilters;

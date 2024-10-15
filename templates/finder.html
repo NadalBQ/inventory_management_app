@@ -37,17 +37,40 @@
                 <table class="scalable-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Amount</th>
-                            <th>Location</th>
-                            <th>Parent</th>
-                            <th>Type</th>
+                            <!-- Sorting buttons for ID column -->
+                            <th>ID
+                                <button onclick="sortTable(0, 'asc')">A-Z</button>
+                                <button onclick="sortTable(0, 'desc')">Z-A</button>
+                            </th>
+                            <!-- Dropdown for filtering amount -->
+                            <th>Amount
+                                <select id="amountFilter" onchange="filterTable(1)">
+                                    <option value="">All</option>
+                                </select>
+                            </th>
+                            <!-- Dropdown for filtering location -->
+                            <th>Location
+                                <select id="locationFilter" onchange="filterTable(2)">
+                                    <option value="">All</option>
+                                </select>
+                            </th>
+                            <!-- Dropdown for filtering parent -->
+                            <th>Parent
+                                <select id="parentFilter" onchange="filterTable(3)">
+                                    <option value="">All</option>
+                                </select>
+                            </th>
+                            <!-- Dropdown for filtering type -->
+                            <th>Type
+                                <select id="typeFilter" onchange="filterTable(4)">
+                                    <option value="">All</option>
+                                </select>
+                            </th>
                         </tr>
-                        
                     </thead>
                     <tbody id="table-body">
                         <!-- offline example rows -->
-                         
+
                         <tr><td>Ejemplo</td><td>1</td><td>1</td><td>Trastero</td><td>Item</td></tr>
                         <tr><td>Ejemplo</td><td>1</td><td>1</td><td>Trastero</td><td>Item</td></tr>
                         <tr><td>Ejemplo</td><td>1</td><td>1</td><td>Trastero</td><td>Item</td></tr>

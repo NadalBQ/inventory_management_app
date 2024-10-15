@@ -542,3 +542,32 @@ h1 {
         color: #fff;
     }
 }
+
+/* Style for sorting buttons inside the table */
+.scalable-table thead th button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    background-color: #009879;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.scalable-table thead th button:hover {
+    background-color: #007f6b;
+}
+
+/* Style for dropdown filters inside the table */
+.scalable-table thead th select {
+    padding: 5px 10px;
+    margin-top: 5px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.scalable-table thead th select:focus {
+    outline: none;
+    border-color: #009879;
+}
