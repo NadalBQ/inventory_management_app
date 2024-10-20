@@ -144,6 +144,9 @@ async function loadTableData() {
                 tableBody.appendChild(newRow);
             }
         });
+
+        // Populate the filters once the table data has been loaded
+        populateFilters();
     } catch (error) {
         console.error("Error loading CSV data: ", error);
     }
