@@ -235,3 +235,55 @@ function addOptionsToFilter(filterId, valueSet) {
 
 // Run populateFilters on page load to fill the dropdowns with values
 window.onload = populateFilters;
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Build the initial grid with 25 tiles (indices 0-24)
+    const grid = document.getElementById('grid');
+    for (let i = 0; i < 25; i++) {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.textContent = i;  // Each tile shows its index
+        grid.appendChild(tile);
+    }
+
+    // Attach filter listeners
+    document.getElementById('amountFilter').addEventListener('change', applyFilters);
+    document.getElementById('locationFilter').addEventListener('change', applyFilters);
+    document.getElementById('parentFilter').addEventListener('change', applyFilters);
+    document.getElementById('typeFilter').addEventListener('change', applyFilters);
+});
+
+// Function to apply filters and update the grid
+function applyFilters() {
+    const table = document.getElementById('table-body');
+    const rows = Array.from(table.getElementsByTagName('tr'));
+    const locationFilterValue = document.getElementById('locationFilter').value;
+
+    // Clear previous enlarged tiles
+    const allTiles = document.querySelectorAll('.tile');
+    allTiles.forEach(tile => tile.classList.remove('enlarged'));
+
+    // Loop through the table rows and collect filtered locations
+    rows.forEach(row => {
+        const cells = row.getElementsByTagName('td');
+        const location = cells[2].textContent.trim(); // Assuming Location is the 3rd column
+        const amount = cells[1].textContent.trim();   // Assuming Amount is the 2nd column
+        const parent = cells[3].textContent.trim();   // Assuming Parent is the 4th column
+        const type = cells[4].textContent.trim();     // Assuming Type is the 5th column
+
+        // Apply filters (can add conditions for other filters too)
+        const matchesLocation = locationFilterValue === '' || location === locationFilterValue;
+
+        if (matchesLocation) {
+            // Get the location index and enlarge the corresponding tile
+            const locationIndex = parseInt(location, 10);
+            if (!isNaN(locationIndex) && locationIndex >= 0 && locationIndex < 25) {
+                const tile = document.querySelector(`.tile:nth-child(${locationIndex + 1})`);
+                if (tile) {
+                    tile.classList.add('enlarged');
+                }
+            }
+        }
+    });
+}
