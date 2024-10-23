@@ -258,24 +258,45 @@ document.addEventListener('DOMContentLoaded', () => {
 function applyFilters() {
     const table = document.getElementById('table-body');
     const rows = Array.from(table.getElementsByTagName('tr'));
+
+    // Get the filter values
+    const amountFilterValue = document.getElementById('amountFilter').value;
     const locationFilterValue = document.getElementById('locationFilter').value;
+    const parentFilterValue = document.getElementById('parentFilter').value;
+    const typeFilterValue = document.getElementById('typeFilter').value;
 
     // Clear previous enlarged tiles
     const allTiles = document.querySelectorAll('.tile');
     allTiles.forEach(tile => tile.classList.remove('enlarged'));
 
-    // Loop through the table rows and collect filtered locations
     rows.forEach(row => {
         const cells = row.getElementsByTagName('td');
-        const location = cells[2].textContent.trim(); // Assuming Location is the 3rd column
-        const amount = cells[1].textContent.trim();   // Assuming Amount is the 2nd column
-        const parent = cells[3].textContent.trim();   // Assuming Parent is the 4th column
-        const type = cells[4].textContent.trim();     // Assuming Type is the 5th column
+        const amount = cells[1].textContent.trim();    // Assuming Amount is the 2nd column
+        const location = cells[2].textContent.trim();  // Assuming Location is the 3rd column
+        const parent = cells[3].textContent.trim();    // Assuming Parent is the 4th column
+        const type = cells[4].textContent.trim();      // Assuming Type is the 5th column
 
-        // Apply filters (can add conditions for other filters too)
+        // Check if the row matches the filter criteria
+        const matchesAmount = amountFilterValue === '' || amount === amountFilterValue;
         const matchesLocation = locationFilterValue === '' || location === locationFilterValue;
+        const matchesParent = parentFilterValue === '' || parent === parentFilterValue;
+        const matchesType = typeFilterValue === '' || type === typeFilterValue;
 
-        if (matchesLocation) {
+        // If all filters match, show the row, else hide it
+        if (matchesAmount && matchesLocation && matchesParent && matchesType) {
+            row.style.display = ''; // Show row
+        } else {
+            row.style.display = 'none'; // Hide row
+        }
+    });
+
+    // After filtering rows, enlarge the grid tiles for visible locations
+    rows.forEach(row => {
+        // Check if the row is visible
+        if (row.style.display !== 'none') {
+            const cells = row.getElementsByTagName('td');
+            const location = cells[2].textContent.trim(); // Assuming Location is the 3rd column
+
             // Get the location index and enlarge the corresponding tile
             const locationIndex = parseInt(location, 10);
             if (!isNaN(locationIndex) && locationIndex >= 0 && locationIndex < 25) {
