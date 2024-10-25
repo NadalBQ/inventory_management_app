@@ -3,11 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('executeButton').addEventListener('click', addElement);
     document.getElementById('deleteButton').addEventListener('click', delElement);
     document.getElementById('updateButton').addEventListener('click', updElement);
+
+    // Attach filter listeners
+    document.getElementById('amountFilter').addEventListener('change', applyFilters);
+    document.getElementById('locationFilter').addEventListener('change', applyFilters);
+    document.getElementById('parentFilter').addEventListener('change', applyFilters);
+    document.getElementById('typeFilter').addEventListener('change', applyFilters);
 });
 
 // Reusable function to send POST requests
 function sendRequest(url, body, resultDiv) {
-    document.getElementById(resultDiv).innerText = 'Processing...';
+    document.getElementById(resultDiv).innerText = 'Processing...'; // Show a loading message
     fetch(url, {
         signal: AbortSignal.timeout(5000),
         method: 'POST',
@@ -17,12 +23,17 @@ function sendRequest(url, body, resultDiv) {
         body: JSON.stringify(body)
     })
     .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
         return response.json();
     })
     .then(data => {
-        if (data.error) throw new Error(data.error);
+        if (data.error) {
+            throw new Error(data.error);
+        }
         document.getElementById(resultDiv).innerText = 'Result: ' + data.result;
+        loadTableData(); // Reload table data after any change
     })
     .catch(error => {
         console.error('Error:', error);
@@ -40,10 +51,12 @@ function sendRequest(url, body, resultDiv) {
 function addElement() {
     const token = document.getElementById('addtoken').value;
     const ID = document.getElementById('addID').value;
+
     if (!token || !ID) {
         alert('GitHub token and Element ID are required.');
         return;
     }
+
     const body = {
         token: token,
         ID: ID,
@@ -52,6 +65,7 @@ function addElement() {
         parent: document.getElementById('addparent').value || "Trastero",
         Type: document.getElementById('addwhichType').value || "Item"
     };
+
     sendRequest('/add_item', body, 'resultDivAdd');
 }
 
@@ -59,16 +73,19 @@ function addElement() {
 function delElement() {
     const token = document.getElementById('deltoken').value;
     const ID = document.getElementById('delID').value;
+
     if (!token || !ID) {
         alert('GitHub token and Element ID are required.');
         return;
     }
+
     const body = {
         token: token,
         ID: ID,
         location: document.getElementById('dellocation').value || "0",
         amount: document.getElementById('delamount').value || "1"
     };
+
     sendRequest('/del_item', body, 'resultDivSub');
 }
 
@@ -77,10 +94,12 @@ function updElement() {
     const token = document.getElementById('updtoken').value;
     const pastID = document.getElementById('pastID').value;
     const newID = document.getElementById('newID').value;
+
     if (!token || !pastID || !newID) {
         alert('GitHub token, Past ID, and New ID are required.');
         return;
     }
+
     const body = {
         token: token,
         pastID: pastID,
@@ -94,9 +113,11 @@ function updElement() {
         newParent: document.getElementById('newParent').value || "Trastero",
         newType: document.getElementById('newWhichType').value || "Item"
     };
+
     sendRequest('/update_item', body, 'resultDivUpd');
 }
 
+// Load table data
 async function loadTableData() {
     try {
         const response = await fetch('../static/csvs/inventory.csv');
@@ -120,65 +141,35 @@ async function loadTableData() {
                 tableBody.appendChild(newRow);
             }
         });
-        populateFilters();
+        
+        populateFilters(); // Refresh filters based on updated data
     } catch (error) {
         console.error("Error loading CSV data: ", error);
     }
 }
 
-// Function to apply filters and update the grid
-function applyFilters() {
+// Function to populate filters based on table data
+function populateFilters() {
     const table = document.getElementById('table-body');
     const rows = Array.from(table.getElementsByTagName('tr'));
 
-    const amountFilterValue = document.getElementById('amountFilter').value;
-    const locationFilterValue = document.getElementById('locationFilter').value;
-    const parentFilterValue = document.getElementById('parentFilter').value;
-    const typeFilterValue = document.getElementById('typeFilter').value;
+    const amounts = new Set();
+    const locations = new Set();
+    const parents = new Set();
+    const types = new Set();
 
     rows.forEach(row => {
         const cells = row.getElementsByTagName('td');
-        const amount = cells[1].textContent.trim();
-        const location = cells[2].textContent.trim();
-        const parent = cells[3].textContent.trim();
-        const type = cells[4].textContent.trim();
-
-        const matchesAmount = amountFilterValue === '' || amount === amountFilterValue;
-        const matchesLocation = locationFilterValue === '' || location === locationFilterValue;
-        const matchesParent = parentFilterValue === '' || parent === parentFilterValue;
-        const matchesType = typeFilterValue === '' || type === typeFilterValue;
-
-        row.style.display = matchesAmount && matchesLocation && matchesParent && matchesType ? '' : 'none';
+        amounts.add(cells[1].textContent.trim());
+        locations.add(cells[2].textContent.trim());
+        parents.add(cells[3].textContent.trim());
+        types.add(cells[4].textContent.trim());
     });
 
-    updateFilterOptions();
-    updateGridTiles();
-}
-
-// Update the filter options based on visible rows
-function updateFilterOptions() {
-    const table = document.getElementById('table-body');
-    const rows = Array.from(table.getElementsByTagName('tr'));
-
-    const visibleAmounts = new Set();
-    const visibleLocations = new Set();
-    const visibleParents = new Set();
-    const visibleTypes = new Set();
-
-    rows.forEach(row => {
-        if (row.style.display !== 'none') {
-            const cells = row.getElementsByTagName('td');
-            visibleAmounts.add(cells[1].textContent.trim());
-            visibleLocations.add(cells[2].textContent.trim());
-            visibleParents.add(cells[3].textContent.trim());
-            visibleTypes.add(cells[4].textContent.trim());
-        }
-    });
-
-    populateDropdown('amountFilter', visibleAmounts);
-    populateDropdown('locationFilter', visibleLocations);
-    populateDropdown('parentFilter', visibleParents);
-    populateDropdown('typeFilter', visibleTypes);
+    populateDropdown('amountFilter', amounts);
+    populateDropdown('locationFilter', locations);
+    populateDropdown('parentFilter', parents);
+    populateDropdown('typeFilter', types);
 }
 
 function populateDropdown(filterId, uniqueValues) {
@@ -197,37 +188,27 @@ function populateDropdown(filterId, uniqueValues) {
     });
 }
 
-// Highlight the grid tiles for visible rows
-function updateGridTiles() {
-    const rows = Array.from(document.getElementById('table-body').getElementsByTagName('tr'));
-    const allTiles = document.querySelectorAll('.tile');
-    allTiles.forEach(tile => tile.classList.remove('enlarged'));
+function applyFilters() {
+    const table = document.getElementById('table-body');
+    const rows = Array.from(table.getElementsByTagName('tr'));
+
+    const amountFilterValue = document.getElementById('amountFilter').value;
+    const locationFilterValue = document.getElementById('locationFilter').value;
+    const parentFilterValue = document.getElementById('parentFilter').value;
+    const typeFilterValue = document.getElementById('typeFilter').value;
 
     rows.forEach(row => {
-        if (row.style.display !== 'none') {
-            const location = row.getElementsByTagName('td')[2].textContent.trim();
-            const locationIndex = parseInt(location, 10);
-            if (!isNaN(locationIndex) && locationIndex >= 0 && locationIndex < 25) {
-                const tile = document.querySelector(`.tile:nth-child(${locationIndex + 1})`);
-                if (tile) {
-                    tile.classList.add('enlarged');
-                }
-            }
-        }
+        const cells = row.getElementsByTagName('td');
+        const amount = cells[1].textContent.trim();
+        const location = cells[2].textContent.trim();
+        const parent = cells[3].textContent.trim();
+        const type = cells[4].textContent.trim();
+
+        const matchesAmount = !amountFilterValue || amount === amountFilterValue;
+        const matchesLocation = !locationFilterValue || location === locationFilterValue;
+        const matchesParent = !parentFilterValue || parent === parentFilterValue;
+        const matchesType = !typeFilterValue || type === typeFilterValue;
+
+        row.style.display = matchesAmount && matchesLocation && matchesParent && matchesType ? '' : 'none';
     });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('grid');
-    for (let i = 0; i < 25; i++) {
-        const tile = document.createElement('div');
-        tile.classList.add('tile');
-        tile.textContent = i;
-        grid.appendChild(tile);
-    }
-
-    document.getElementById('amountFilter').addEventListener('change', applyFilters);
-    document.getElementById('locationFilter').addEventListener('change', applyFilters);
-    document.getElementById('parentFilter').addEventListener('change', applyFilters);
-    document.getElementById('typeFilter').addEventListener('change', applyFilters);
-});
