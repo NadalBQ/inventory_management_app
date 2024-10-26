@@ -233,8 +233,6 @@ function addOptionsToFilter(filterId, valueSet) {
     });
 }
 
-// Run populateFilters on page load to fill the dropdowns with values
-window.onload = populateFilters;
 
 
 document.addEventListener('DOMContentLoaded', () => {
