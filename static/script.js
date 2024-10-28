@@ -234,7 +234,6 @@ function addOptionsToFilter(filterId, valueSet) {
 }
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
     // Build the initial grid with 25 tiles (indices 0-24)
     const grid = document.getElementById('grid');
@@ -256,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function applyFilters() {
     const table = document.getElementById('table-body');
     const rows = Array.from(table.getElementsByTagName('tr'));
+
     // Get the filter values
     const amountFilterValue = document.getElementById('amountFilter').value;
     const locationFilterValue = document.getElementById('locationFilter').value;
@@ -274,30 +274,28 @@ function applyFilters() {
         const parent = cells[3].textContent.trim();   // Assuming Parent is the 4th column
         const type = cells[4].textContent.trim();     // Assuming Type is the 5th column
 
-        // Apply filters (can add conditions for other filters too)
-        // Check if the row matches the filter criteria
+        // Apply filters to determine visibility of the row
         const matchesAmount = amountFilterValue === '' || amount === amountFilterValue;
         const matchesLocation = locationFilterValue === '' || location === locationFilterValue;
         const matchesParent = parentFilterValue === '' || parent === parentFilterValue;
         const matchesType = typeFilterValue === '' || type === typeFilterValue;
-        // If all filters match, show the row, else hide it
+
         if (matchesAmount && matchesLocation && matchesParent && matchesType) {
             row.style.display = ''; // Show row
         } else {
             row.style.display = 'none'; // Hide row
         }
     });
+
     // After filtering rows, enlarge the grid tiles for visible locations
     rows.forEach(row => {
         // Check if the row is visible
         if (row.style.display !== 'none') {
             const cells = row.getElementsByTagName('td');
             const location = cells[2].textContent.trim(); // Assuming Location is the 3rd column
-        }
-
-        if (matchesLocation) {
-            // Get the location index and enlarge the corresponding tile
             const locationIndex = parseInt(location, 10);
+
+            // If locationIndex is valid, enlarge the corresponding tile
             if (!isNaN(locationIndex) && locationIndex >= 0 && locationIndex < 25) {
                 const tile = document.querySelector(`.tile:nth-child(${locationIndex + 1})`);
                 if (tile) {
