@@ -136,7 +136,7 @@ def add_item(edit: bool=False, adddata=None):
         df = pd.concat([df, new_row])
         logger.info("Added a new item to the database")
 
-    updateDataframe(repository, df, csv)
+    updateDataframe(repository, df, csv, f"Added {ID} to the database")
     
     if not edit:
         return jsonify({'result': "Element added successfully"})
@@ -179,7 +179,7 @@ def del_item(edit: bool=False, deldata=None):
     elif int(Amount) == int(matching_rows["Amount"].iloc[0]):
         df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
         logger.info(f"Deleted every element with ID={ID} and Location={Location}")
-        updateDataframe(repository, df, csv)
+        updateDataframe(repository, df, csv, f"Deleted {ID} from the database")
         if not edit:
             return jsonify({'result': "Element deleted successfully."})
         return "Done"
@@ -190,7 +190,7 @@ def del_item(edit: bool=False, deldata=None):
             int(matching_rows["Amount"].iloc[0]) - int(Amount)
         )
         logger.info(f"Deleted {Amount} units of element with ID={ID} and Location={Location}")
-        updateDataframe(repository, df, csv)
+        updateDataframe(repository, df, csv, f"Deleted {Amount} units of {ID} from the database")
         if not edit:
             return jsonify({'result': "Element amount updated successfully."})
         return "Done"
