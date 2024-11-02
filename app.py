@@ -152,6 +152,7 @@ def del_item(edit: bool=False, deldata=None):
     ID = str(deldata['ID'])
     Location = str(deldata['location'])
     Amount = str(deldata['amount'])
+    
 
     logger.info("delete item: " + token, ID, Location, Amount)
 
@@ -171,12 +172,15 @@ def del_item(edit: bool=False, deldata=None):
     # Filter the DataFrame to get matching rows
     matching_rows = df.loc[df['ID'].eq(ID) & df['Location'].eq(Location)]
     logger.debug(matching_rows, "Matching rows " + "_"*30)
+
     # Check if there are any matching rows before proceeding
     if matching_rows.empty:
         return jsonify({'result': f"No elements with ID={ID} and Location={Location} found in the database."})
 
+    if Amount == "0":
+        Amount = int(matching_rows["Amount"].iloc[0])
     # If User provides ID, Location and the exact Amount there is of that element:
-    elif int(Amount) == int(matching_rows["Amount"].iloc[0]):
+    if int(Amount) == int(matching_rows["Amount"].iloc[0]):
         df = df[~(df['ID'].eq(ID) & df['Location'].eq(Location))]
         logger.info(f"Deleted every element with ID={ID} and Location={Location}")
         updateDataframe(repository, df, csv, f"Deleted {ID} from the database")

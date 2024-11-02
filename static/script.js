@@ -78,7 +78,7 @@ function delElement() {
         token: token,
         ID: ID,
         location: document.getElementById('dellocation').value || "0",
-        amount: document.getElementById('delamount').value || "1"
+        amount: document.getElementById('delamount').value || "0"
     };
 
     sendRequest('/del_item', body, 'resultDivSub');
