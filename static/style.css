@@ -187,9 +187,13 @@ a.button {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    display: flex;
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows:
+        auto 1fr auto;
     flex-direction: column;
     height: 100%;
+
 }
 
 header {
@@ -295,6 +299,7 @@ footer {
 
 .theProjectSection {
     height: 100%;
+    min-height: 100px;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background-image: url("/static/images/fondoupv.jpg");
@@ -305,8 +310,9 @@ footer {
     align-items: center;
 }
 .pdf-container {
-    width: 80%;
+    width: 70%;
     height: 80%;
+    
     background: rgba(255, 255, 255, 0.8);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     overflow: hidden;
