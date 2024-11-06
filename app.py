@@ -90,6 +90,10 @@ def theProject():
 def nadal():
     return render_template('nadal.html')
 
+@app.route('/template')
+def template():
+    return render_template('template.html')
+
 # Utility function to update the CSV file in the GitHub repository
 def updateDataframe(repository, df, csv, commit="Updating CSV content"):
     

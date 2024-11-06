@@ -1,0 +1,40 @@
+<!--html template-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css"> <!-- Same style sheet for each page -->
+    <title>Browser title</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico"> <!-- same favicon for each page -->
+    <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script> <!-- fontawesome if needed -->
+</head>
+
+<body>
+    <header> <!-- Same page header for each page -->
+        <h1>Header title</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li> <!-- flask page linking -->
+                <li><a href="{{ url_for('aboutus') }}">About</a></li>
+                <li><a href="{{ url_for('theProject') }}">The Project</a></li>
+                <li><a href="{{ url_for('finder') }}">Finder</a></li>
+                <li><a href="{{ url_for('template') }}"><b>Template</b></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="templateSection"> <!-- a body section for the page -->
+        <h2>Mini title:</h2>
+        <section>
+            <h3>Section title:</h3>
+            <p>text</p>
+        </section>
+
+    </section>
+
+    <footer>
+        <p>&copy; copyright text on footer.</p>
+    </footer>
+</body>
+</html>
