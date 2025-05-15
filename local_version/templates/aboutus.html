@@ -1,0 +1,61 @@
+<!--About us html-->
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/style.css">
+        <title>About me</title>
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+        <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script>
+    </head>
+    
+    <body>
+        <header>
+            <h1>Your inventory management app</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('aboutus') }}"><b>About</b></a></li>
+                    <li><a href="{{ url_for('theProject') }}">The Project</a></li>
+                    <li><a href="{{ url_for('finder') }}">Finder</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="aboutusSection">
+            <div class="scrollable-wrapper">
+                
+                
+                <div class="container">
+                    <div class="card">
+                        <div class="card__top">
+                            <img src="/static/images/fondoagora.jpg" alt="Sky">
+                            <div class="profile__photo">
+                                <img src="/static/images/nadalimage.jpg" alt="Profile Photo">
+                            </div>
+                        </div>
+                   
+                        <div class="card__content">
+                            <div class="names">
+                                <h2>Nadal Bardisa Quintero</h2>
+                                <h3>Full stack developer</h3>
+                            </div>
+                            <div class="about">
+                                <p><span><i class="fas fa-map-marker-alt"></i></span>  Valencia, Spain</p>
+                                <p><span><i class="far fa-building"></i></span>  UPV (Politechnic University of Valencia)</p>
+                                <p><span><i class="far fa-envelope"></i></span><a href="mailto:nbarqui@upv.edu.es"> nadalbq@gmail.com</a></p>
+                                <a href={{ url_for('nadal') }} class="button">Read More</a>
+                            </div>
+                                
+                        </div>
+                    </div>
+                </div>
+                
+
+
+            </div>      
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
+        </footer>
+    </body>
+</html>

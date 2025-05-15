@@ -1,0 +1,39 @@
+<!--finder tutorial html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>How to find</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Your inventory management app</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('aboutus') }}">About</a></li>
+                <li><a href="{{ url_for('theProject') }}">The Project</a></li>
+                <li><a href="{{ url_for('finder') }}">Finder</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="explainsection">
+        <h2>Filtering:</h2>
+        <section>
+            <h3>How to filter by attribute:</h3>
+            <p>To filter by the value of a specific attribute of the element, click on the drop-down at the header of the column named by that attribute, then select the value that attribute has on that element you are looking for.</p>
+        </section>
+
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
+    </footer>
+</body>
+</html>

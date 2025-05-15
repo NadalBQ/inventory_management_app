@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>The project</title>
+        <link rel="stylesheet" href="../static/style.css">
+        <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    </head>
+
+    <body>
+        <header>
+            <h1>Your inventory management app</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('aboutus') }}">About</a></li>
+                    <li><a href="{{ url_for('theProject') }}"><b>The Project</b></a></li>
+                    <li><a href="{{ url_for('finder') }}">Finder</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="theProjectSection">
+            <div class="pdf-container">
+                
+                <iframe src="/static/pdfs/Documentation.pdf" type="application/pdf"></iframe>
+                
+                <p>As of right now, there is no pdf available explaining the bits and bobs of the project, stay tuned to see new changes weekly!</p>
+                <p>To Do: Make 2D map of the room's tiles highlight when hovering element in the table; Add pdf to theProject; Make demo; migrate csv out of GitHub. In no particular order.</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
+        </footer>
+    </body>
+</html>

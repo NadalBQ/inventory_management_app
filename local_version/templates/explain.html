@@ -1,0 +1,53 @@
+<!--explain html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Inventory management app</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <script src="https://kit.fontawesome.com/90ee6ee289.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Your inventory management app</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('aboutus') }}">About</a></li>
+                <li><a href="{{ url_for('theProject') }}">The Project</a></li>
+                <li><a href="{{ url_for('finder') }}">Finder</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="explainsection">
+        <h2>Managing a room:</h2>
+        <section>
+            <h3>How it all started.</h3>
+            <p>Managing a room is tiring and boring, many things must be remembered such as "where did I put this last time?" so that you can find it again the next time you are looking for a specific item.</p>
+            <p>I figured that, by removing the remembering factor, I could develop a more efficient way to manage information about items in a room, thus making it a lot less tiring, at the cost of inventoring one last time all your items into the database.</p>
+            <p>My approach is to make a web application that updates the values of the dataset at your will, making it easy for you to update whether you take or leave an item on the room, where it is, if it's inside of a box and even take notice of the amount of these items you have at your disposal.</p>
+            <p>My first thought when planning this app was "Can I do this without a program?" and the answer was yes, just stick a paper on the room's wall with a table to keep track of the items getting in and out and a pen lying around so you can update it easily, but that's not very helpful... What if I am at university and I want to check if I have blank sheets at home or not (to see if i need to buy some blank sheets or not before going home)? Well I figured that an online version of that paper would be very helpful and there comes the idea of not only seing what I have but also update that database wherever and whenever.</p>
+        </section>
+
+        <section>
+            <h3>How it works.</h3>
+            <p>The first thing that I had to take into consideration was where to store this database, as it had to be visible to everybody but only updateable by trusted users (people at home). GitHub was my go-to place in this aspect, storing the code, the html and the csv file, only updateable by those who had the token.</p>
+            <p>The rest was easier, I just needed 4 things to work... Append new lines to the database, substract existent lines from the database, update existent lines of the database and visualize the data stored in the database; hence the 4 sections of the home page.</p>
+        </section>
+
+        <section>
+            <h3>About me</h3>
+            <p>Find out more about me at the <a href="{{ url_for('aboutus') }}">About</a> section!</p>
+            <p>It was on my best interest to make it easier to manage the items stored in a room as keeping track of so many items in such a big room can become very difficult as years go by and items keep coming in. Surely I'm not the only one, some guy at some point must have forgotten about something and long after rediscovered it on an old closet or box.</p>
+        </section>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Your inventory management app, all rights reserved.</p>
+    </footer>
+</body>
+</html>
